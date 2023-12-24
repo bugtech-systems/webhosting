@@ -22,9 +22,9 @@ db.once('open', () => {
 
 app.use(bodyParser.json());
 
-app.use('/api/v2/auth', authRoutes);
-app.use('/api/v2/file', fileRoutes);
-app.use('/api/v2/user', userRoutes);
+app.use('/apiv2/auth', authRoutes);
+app.use('/apiv2/file', fileRoutes);
+app.use('/apiv2/user', userRoutes);
 
 app.listen(port, () => {
     console.log(`Server is running on port ${port}`);
