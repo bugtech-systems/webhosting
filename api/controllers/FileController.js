@@ -77,7 +77,7 @@ module.exports = {
         try {
             if (!subdomain) return res.status(200).json({ availability: false })
 
-            let available = await File.findOne({ subdomain, isDeleted: false })
+            let available = await File.findOne({ $and: [{ subdomain: subdomain}, {isDeleted: false}] })
 
             res.status(200).json({ availability: available ? false : true })
 

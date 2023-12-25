@@ -12,7 +12,6 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import UploadFiles from '../components/UploadFile';
 import FileUploadService from '../utils/FileUploadService';
 
-const defaultTheme = createTheme();
 
 
 const mainFeaturedPost = {
@@ -75,7 +74,10 @@ export default function Dashboard() {
         setSites(res.data)
       })
       .catch(err => {
-        console.log(err)
+      if(err?.response?.status === 403){
+        localStorage.clear();   
+        window.location.href = '/';
+      }
       });
   }
 

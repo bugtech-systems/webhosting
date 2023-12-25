@@ -1,7 +1,8 @@
 import axios from "axios";
+import { env_vars } from "./config";
 
 export default axios.create({
-    baseURL: "https://sharewin.pro/apiv2",
+    baseURL: env_vars.api_url,
     headers: {
         "Content-type": "application/json",
     },
