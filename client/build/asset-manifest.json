@@ -1,16 +1,16 @@
 {
   "files": {
     "main.css": "/static/css/main.54eb2e24.css",
-    "main.js": "/static/js/main.972709fb.js",
+    "main.js": "/static/js/main.26f9f10c.js",
     "static/js/787.d5fa4d18.chunk.js": "/static/js/787.d5fa4d18.chunk.js",
     "static/media/coinHflip.png": "/static/media/coinHflip.0ff9e0e4da6a1bc34c3d.png",
     "index.html": "/index.html",
     "main.54eb2e24.css.map": "/static/css/main.54eb2e24.css.map",
-    "main.972709fb.js.map": "/static/js/main.972709fb.js.map",
+    "main.26f9f10c.js.map": "/static/js/main.26f9f10c.js.map",
     "787.d5fa4d18.chunk.js.map": "/static/js/787.d5fa4d18.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.54eb2e24.css",
-    "static/js/main.972709fb.js"
+    "static/js/main.26f9f10c.js"
   ]
 }
