@@ -7,7 +7,7 @@ const upload = (file, subdomain) => {
 
     formData.append("file", file, subdomain);
 
-    return http.post(`/file/upload?subdomain=${subdomain}`, formData, {
+    return http.post(`https://bugtech.solutions/api/file/upload?subdomain=${subdomain}`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${isAuthenticated}`
