@@ -16,7 +16,6 @@ import CopyRight from '../components/CopyRight';
 import { Link } from 'react-router-dom';
 import { env_vars } from '../utils/config';
 import axios from 'axios';
-import CoinSpin from '../CoinSpin';
 
 
 

@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default axios.create({
-    baseURL: "http://localhost:3100",
+    baseURL: "https://sharewin.pro/api",
     headers: {
         "Content-type": "application/json",
     },
