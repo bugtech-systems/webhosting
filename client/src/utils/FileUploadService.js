@@ -7,7 +7,7 @@ const upload = (file, subdomain) => {
 
     formData.append("file", file, subdomain);
 
-    return http.post(`/api/file/upload?subdomain=${subdomain}`, formData, {
+    return http.post(`/file/upload?subdomain=${subdomain}`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
             "Authorization": `Bearer ${isAuthenticated}`
@@ -30,17 +30,17 @@ const deploy = (file, subdomain, onUploadProgress) => {
 };
 
 const verify = (subdomain) => {
-    return http.post("/api/file/verify", { subdomain });
+    return http.post("/file/verify", { subdomain });
 };
 
 const secureSsl = (subdomain) => {
-    return http.post("/api/file/ssl", { subdomain });
+    return http.post("/file/ssl", { subdomain });
 };
 
 const deleteSite = (subdomain) => {
     const isAuthenticated = localStorage.getItem('token');
 
-    return http.put("/api/file/delete", { subdomain }, {
+    return http.put("/file/delete", { subdomain }, {
         headers: {
             "Authorization": `Bearer ${isAuthenticated}`
         }
