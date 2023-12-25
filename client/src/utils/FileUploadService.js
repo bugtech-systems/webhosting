@@ -51,7 +51,7 @@ const deleteSite = (subdomain) => {
 const getFiles = () => {
     const isAuthenticated = localStorage.getItem('token');
 
-    return http.get("/api/file/files", {
+    return http.get("/file/files", {
         headers: {
             "Authorization": `Bearer ${isAuthenticated}`
         }
