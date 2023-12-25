@@ -79,6 +79,7 @@ module.exports = {
 
             let available = await File.findOne({ $and: [{ subdomain: subdomain}, {isDeleted: false}] })
 
+console.log(available, 'available')
             res.status(200).json({ availability: available ? false : true })
 
         } catch (error) {
