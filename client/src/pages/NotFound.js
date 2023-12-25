@@ -1,6 +1,7 @@
 // client/src/components/UrlInfo.js
 import React, { useState } from 'react';
 import axios from 'axios';
+import { env_vars } from '../utils/config';
 
 const UrlInfo = () => {
     const [url, setUrl] = useState('');
@@ -12,7 +13,7 @@ const UrlInfo = () => {
 
     const handleFetchInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:3100/api/file/url?url=${url}`);
+            const response = await axios.get(`${env_vars.api_url}/file/url?url=${url}`);
             const { title, description, image } = response.data;
             setInfo({ title, description, image });
         } catch (error) {

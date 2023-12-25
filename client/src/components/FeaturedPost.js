@@ -12,6 +12,7 @@ import axios from 'axios';
 import { Box } from '@mui/system';
 import { FormControlLabel, IconButton, Switch } from '@mui/material';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { env_vars } from '../utils/config';
 
 
 function FeaturedPost({ post, handleSsl, handleDelete }) {
@@ -29,7 +30,7 @@ function FeaturedPost({ post, handleSsl, handleDelete }) {
 
     const handleFetchInfo = async () => {
         try {
-            const response = await axios.get(`http://localhost:3100/api/file/url?url=${url}`);
+            const response = await axios.get(`${env_vars.api_url}/file/url?url=${url}`);
             const { title, description, image } = response.data;
             setInfo({ title, description, image });
         } catch (error) {
