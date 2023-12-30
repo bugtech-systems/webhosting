@@ -3,17 +3,20 @@ const multer = require('multer');
 const path = require('path');
 const File = require('../models/FileModel');
 const axios = require('axios');
-const cheerio = require('cheerio')
+const cheerio = require('cheerio');
+const { getFiles } = require('../utils/helpers');
 // Multer setup for file upload
+const{fileURLToPath} = require('url');
 
 
 module.exports = {
     uploadFile: async (req, res) => {
         let { subdomain } = req.query;
         try {
-            const file = new File({ subdomain, filename: req.file.filename, path: req.file.path, user: req.user._id });
+            const file = new File({ subdomain, filename: req.file.filename, path: req.file.path, user: req.user?._id });
             await file.save();
-            res.status(201).json({ message: 'File uploaded successfully' });
+            
+            res.status(201).json({ message: 'File uploaded successfully', file: req.file });
         } catch (error) {
             console.log(error)
             res.status(500).json({ message: error.message });
@@ -72,6 +75,20 @@ module.exports = {
             res.status(500).json({ error: 'Something went wrong!' });
         }
     },
+    getFolderFiles: async (req, res) => {
+        let folderPath = req.query.path;
+        
+        try {
+            if (!folderPath) return res.status(404).json({ message: 'Folder Path is required!' });
+            
+            let filePath = path.join(process.cwd(), "uploads", folderPath)
+            let contents = await getFiles(filePath, [])
+            res.status(200).json(contents)
+
+        } catch (error) {
+            res.status(500).json({ error: 'Something went wrong!' });
+        }
+    },
     checkAvailability: async (req, res) => {
         let { subdomain } = req.body;
         try {
@@ -79,7 +96,6 @@ module.exports = {
 
             let available = await File.findOne({ $and: [{ subdomain: subdomain}, {isDeleted: false}] })
 
-console.log(available, 'available')
             res.status(200).json({ availability: available ? false : true })
 
         } catch (error) {

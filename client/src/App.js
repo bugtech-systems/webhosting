@@ -1,12 +1,13 @@
 // client/src/App.js
 import React from 'react';
+import GlobalStyles from 'styles/GlobalStyles';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-
+import HostingCloudLandingPage from "pages/Hosting/HostingCloudLandingPage.js";
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
+import Dashboard from './pages/Dashboard/Dashboard';
 import UploadFile from './components/UploadFile';
 import NotFound from './pages/NotFound';
 import Pricing from './pages/Pricing';
@@ -33,16 +34,19 @@ function App() {
 
 
   return (
+  <>
+          <ThemeProvider theme={defaultTheme}>
+        <GlobalStyles /> 
     <Router>
     
           {/* <Appbar /> */}
-          <ThemeProvider theme={defaultTheme}>
                 <CssBaseline />
           <div>
             <Routes>
 
               <Route path="/" exact element={<Navigate to="/dashboard" />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/docs" element={<HostingCloudLandingPage />} />
 
               <Route path="/dashboard" exact element={
                 <PrivateRoute>
@@ -70,8 +74,10 @@ function App() {
               <Route element={<NotFound />} />
             </Routes>
           </div>
-      </ThemeProvider>
         </Router>
+      </ThemeProvider>
+        
+  </>
         
         );
 }

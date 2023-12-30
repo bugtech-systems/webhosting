@@ -89,7 +89,7 @@ export default function Dashboard() {
   return (
 
     <Container maxWidth="lg">
-      <Header title="SHARED HOSTING" leftActionPage="Pricing" />
+      <Header title="SHARED" leftActionPage="Pricing" />
       <main>
         <MainFeaturedPost post={mainFeaturedPost} />
         {sites.length !== 0 ?
