@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { Route, Routes, Navigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -9,6 +10,7 @@ import Header from './Header';
 import CopyRight from '../../components/CopyRight';
 import Setup from 'components/deployment/Setup';
 import FileUploadService from 'utils/FileUploadService';
+import ProjectOverview from './ProjectOverview';
 
 
 function CustomTabPanel(props) {
@@ -238,18 +240,16 @@ export default function Paperbase() {
         </Box>
         <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
           <Header onDrawerToggle={handleDrawerToggle} activeTab={activeTab} setActiveTab={handleChange} />
+          
           <Box component="main" sx={{ flex: 1, py: 1, px: 1, bgcolor: '#eaeff1' }}>
-                <CustomTabPanel value={activeTab} index={0}>
-                <Setup 
+          <Routes>
+
+<Route path="/project" element={  <ProjectOverview/>} />
+<Route path="/hosting" element={  <Setup 
                 handleGetFiles={handleGetFiles}
-                />
-            </CustomTabPanel>
-            <CustomTabPanel value={activeTab} index={1}>
-             NodeJS
-            </CustomTabPanel>
-            <CustomTabPanel value={activeTab} index={2}>
-            Wordpress
-            </CustomTabPanel>
+                />} />
+</Routes>
+                
           </Box>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
             <CopyRight />

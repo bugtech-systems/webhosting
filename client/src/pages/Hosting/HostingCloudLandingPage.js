@@ -1,4 +1,5 @@
 import React from "react";
+import GlobalStyles from 'styles/GlobalStyles';
 import AnimationRevealPage from "utils/AnimationRevealPage.js";
 import Hero from "components/hero/TwoColumnWithPrimaryBackground.js";
 import Features from "components/features/ThreeColWithSideImageWithPrimaryBackground.js";
@@ -13,6 +14,9 @@ import serverSecureIllustrationImageSrc from "assets/server-secure-illustration.
 
 export default () => {
   return (
+  <>
+        <GlobalStyles /> 
+  
     <AnimationRevealPage disabled>
       <Hero />
       <Features />
@@ -34,5 +38,7 @@ export default () => {
       <FAQ />
       <Footer />
     </AnimationRevealPage>
+  </>
+    
   );
 }

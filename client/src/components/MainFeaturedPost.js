@@ -40,14 +40,14 @@ function MainFeaturedPost(props) {
                     <Box
                         sx={{
                             position: 'relative',
-                            p: { xs: 3, md: 6 },
+                            p: { xs: 3, md: 3 },
                             pr: { md: 0 },
                         }}
                     >
-                        <Typography component="h1" variant="h3" color="inherit" gutterBottom>
+                        <Typography component="h1" variant="h4" color="inherit" gutterBottom>
                             {post.title}
                         </Typography>
-                        <Typography variant="h5" color="inherit" paragraph>
+                        <Typography variant="h6" color="inherit" paragraph>
                             {post.description}
                         </Typography>
                        

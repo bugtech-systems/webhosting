@@ -15,6 +15,11 @@ import AddressForm from './AddressForm';
 import PaymentForm from './PaymentForm';
 import Review from './Review';
 import FileUpload from './FileUpload';
+import Header from 'pages/Hosting/Header';
+import { useDispatch, useSelector } from 'react-redux';
+import { CLEAR_CREATE, CLEAR_PROJECT_NAME, SET_MOBILE_OPEN, SET_PROJECTS } from 'redux/actions/types';
+import ReactConfig from './ReactConfig';
+import { useNavigate, useParams } from 'react-router-dom';
 
 
 
@@ -23,6 +28,11 @@ const steps = ['Project Files', 'Project Configurations', 'Review Details'];
 
 
 export default function Setup({handleGetFiles}) {
+  const navigate = useNavigate();
+  const dispatch = useDispatch()
+  const { setupType } = useParams();
+  const { projects, projectName } = useSelector(({data}) => data);
+  const { mobileOpen } = useSelector(({ui}) => ui);
   const [activeStep, setActiveStep] = React.useState(0);
 
 
@@ -31,31 +41,43 @@ export default function Setup({handleGetFiles}) {
       case 0:
         return <FileUpload handleGetFiles={handleGetFiles}/>;
       case 1:
-        return <PaymentForm />;
+        return setupType === 'react' ? <ReactConfig /> : <PaymentForm />;
       case 2:
         return <Review />;
       default:
         throw new Error('Unknown step');
     }
   }
+  
+  
+
 
 
   const handleNext = () => {
-    setActiveStep(activeStep + 1);
+      setActiveStep(activeStep + 1);
   };
 
   const handleBack = () => {
     setActiveStep(activeStep - 1);
   };
+  
+  const handleDrawerToggle = () => {
+    dispatch({type: SET_MOBILE_OPEN, payload: !mobileOpen});
+  };
+  
+console.log(setupType, 'Setup')
+
 
   return (
-    <React.Fragment>
+    <>
+           <Header onDrawerToggle={handleDrawerToggle} />
       <CssBaseline />
-      <Container component="main" maxWidth="sm" sx={{ mb: 4 }}>
+      <Box component="main" sx={{ flex: 1, py: 1, px: 1, bgcolor: '#eaeff1' }}>
+          <Container sx={{ pt: 3 }} maxWidth="md">
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-         {/*  <Typography component="h1" variant="h4" align="center">
-            Deployment
-          </Typography> */}
+           <Typography component="h1" variant="h5" align="center">
+          {setupType === 'react' ? "ReactJS Deployment" : setupType === 'express' ? "NodeJS/Express Deployment" : "Wordpress Deployment"}   
+          </Typography> 
           <Stepper activeStep={activeStep} sx={{ pt: 3, pb: 5 }}>
             {steps.map((label) => (
               <Step key={label}>
@@ -63,16 +85,28 @@ export default function Setup({handleGetFiles}) {
               </Step>
             ))}
           </Stepper>
-          {activeStep === steps.length ? (
+          {activeStep === steps.length - 1? (
             <React.Fragment>
               <Typography variant="h5" gutterBottom>
-                Thank you for your order.
+                You Successfully deployed {setupType === 'react' ? "ReactJS" : setupType === "express" ? "NodeJS/Express" : "WordPress"} Project.
               </Typography>
-              <Typography variant="subtitle1">
-                Your order number is #2001539. We have emailed your order
-                confirmation, and will send you an update when your order has
-                shipped.
-              </Typography>
+              <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <Button
+                  variant="contained"
+                  onClick={() => { 
+                    let newProjects = projects;
+                    
+                    newProjects.push({_id: Math.random(), projectName: projectName, url: 'https://jaybee.bugtech.solutions'})
+                    dispatch({type: SET_PROJECTS, payload: newProjects})
+                    dispatch({type: CLEAR_PROJECT_NAME})
+                    dispatch({type: CLEAR_CREATE})
+                    navigate('/dashboard')
+                  }}
+                  sx={{ mt: 3, ml: 1 }}
+                >
+                  View Projects
+                </Button>
+                </Box>
             </React.Fragment>
           ) : (
             <React.Fragment>
@@ -89,13 +123,15 @@ export default function Setup({handleGetFiles}) {
                   onClick={handleNext}
                   sx={{ mt: 3, ml: 1 }}
                 >
-                  {activeStep === steps.length - 1 ? 'Place order' : 'Next'}
+                  {activeStep === steps.length - 1 ? 'Deploy' : 'Next'}
                 </Button>
               </Box>
             </React.Fragment>
           )}
         </Paper>
       </Container>
-    </React.Fragment>
+      </Box>
+
+    </>
   );
 }

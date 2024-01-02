@@ -1,77 +1,206 @@
 import * as React from 'react';
-import Grid from '@mui/material/Grid';
-import Container from '@mui/material/Container';
-import GitHubIcon from '@mui/icons-material/GitHub';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import Header from '../components/Header';
-import MainFeaturedPost from '../components/MainFeaturedPost';
-import FeaturedPost from '../components/FeaturedPost';
-import CssBaseline from '@mui/material/CssBaseline';
+import { Route, Routes, Navigate } from 'react-router-dom';
+import PropTypes from 'prop-types';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import UploadFiles from '../components/UploadFile';
-import FileUploadService from '../utils/FileUploadService';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import CssBaseline from '@mui/material/CssBaseline';
+import Box from '@mui/material/Box';
+import Navigator from './Hosting/Navigator';
+import Header from './Hosting/Header';
+import CopyRight from '../components/CopyRight';
+import Setup from 'components/deployment/Setup';
+import FileUploadService from 'utils/FileUploadService';
+import ProjectOverview from './Hosting/Services';
+import Hosting from './Hosting/Hosting';
+import ProjectSetup from 'pages/ProjectOverview/ProjectSetup';
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_MOBILE_OPEN, SET_PROJECTS } from 'redux/actions/types';
 
 
+function CustomTabPanel(props) {
+  const { children, value, index, ...other } = props;
 
-const mainFeaturedPost = {
-  title: 'Hosting Made Easy',
-  description:
-    "The Easiest Way to Launch Your Website online: Drag, Drop, Done!",
-  image: 'https://source.unsplash.com/random?wallpapers',
-  imageText: 'main image description',
-  linkText: 'Continue reading…',
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        children
+      )}
+    </div>
+  );
+}
+
+CustomTabPanel.propTypes = {
+  children: PropTypes.node,
+  index: PropTypes.number.isRequired,
+  value: PropTypes.number.isRequired,
 };
 
-const featuredPosts = [
-  {
-    title: 'Featured post',
-    date: 'Nov 12',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random?wallpapers',
-    imageLabel: 'Image Text',
+let theme = createTheme({
+  palette: {
+    primary: {
+      light: '#63ccff',
+      main: '#009be5',
+      dark: '#006db3',
+    },
   },
-  {
-    title: 'Post title',
-    date: 'Nov 11',
-    description:
-      'This is a wider card with supporting text below as a natural lead-in to additional content.',
-    image: 'https://source.unsplash.com/random?wallpapers',
-    imageLabel: 'Image Text',
+  typography: {
+    h5: {
+      fontWeight: 500,
+      fontSize: 26,
+      letterSpacing: 0.5,
+    },
   },
-];
+  shape: {
+    borderRadius: 8,
+  },
+  components: {
+    MuiTab: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+  },
+  mixins: {
+    toolbar: {
+      minHeight: 48,
+    },
+  },
+});
 
-export default function Dashboard() {
-  const [sites, setSites] = React.useState([]);
+theme = {
+  ...theme,
+  components: {
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#081627',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+        contained: {
+          boxShadow: 'none',
+          '&:active': {
+            boxShadow: 'none',
+          },
+        },
+      },
+    },
+    MuiTabs: {
+      styleOverrides: {
+        root: {
+          marginLeft: theme.spacing(1),
+        },
+        indicator: {
+          height: 3,
+          borderTopLeftRadius: 3,
+          borderTopRightRadius: 3,
+          backgroundColor: theme.palette.common.white,
+        },
+      },
+    },
+    MuiTab: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+          margin: '0 16px',
+          minWidth: 0,
+          padding: 0,
+          [theme.breakpoints.up('md')]: {
+            padding: 0,
+            minWidth: 0,
+          },
+        },
+      },
+    },
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          padding: theme.spacing(1),
+        },
+      },
+    },
+    MuiTooltip: {
+      styleOverrides: {
+        tooltip: {
+          borderRadius: 4,
+        },
+      },
+    },
+    MuiDivider: {
+      styleOverrides: {
+        root: {
+          backgroundColor: 'rgb(255,255,255,0.15)',
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          '&.Mui-selected': {
+            color: '#4fc3f7',
+          },
+        },
+      },
+    },
+    MuiListItemText: {
+      styleOverrides: {
+        primary: {
+          fontSize: 14,
+          fontWeight: theme.typography.fontWeightMedium,
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: 'inherit',
+          minWidth: 'auto',
+          marginRight: theme.spacing(2),
+          '& svg': {
+            fontSize: 20,
+          },
+        },
+      },
+    },
+    MuiAvatar: {
+      styleOverrides: {
+        root: {
+          width: 32,
+          height: 32,
+        },
+      },
+    },
+  },
+};
 
+const drawerWidth = 256;
 
-  const handleSsl = (subdomain) => {
-    FileUploadService.secureSsl(subdomain)
-      .then(res => {
-        console.log(res.data, 'res dash')
-        handleGetFiles()
-      })
-      .catch(err => {
-        console.log(err)
-      })
-  };
+export default function Paperbase() {
+  const dispatch = useDispatch();
+  const { mobileOpen } = useSelector(({ui}) => ui);
+  const isSmUp = useMediaQuery(theme.breakpoints.up('sm'));
+  
 
-  const handleDelete = (subdomain) => {
-    FileUploadService.deleteSite(subdomain)
-      .then(res => {
-        console.log(res, 'RES DELETE')
-        handleGetFiles()
-      })
-      .catch(err => {
-        console.log(err)
-      })
+  const handleDrawerToggle = () => {
+    dispatch({type: SET_MOBILE_OPEN, payload: !mobileOpen});
   };
 
   const handleGetFiles = () => {
     FileUploadService.getFiles()
       .then(res => {
-        setSites(res.data)
+        dispatch({type: SET_PROJECTS, payload: res.data})
+        // setSites(res.data)
       })
       .catch(err => {
       if(err?.response?.status === 403){
@@ -80,34 +209,51 @@ export default function Dashboard() {
       }
       });
   }
-
+  
+  
   React.useEffect(() => {
     handleGetFiles()
 
   }, [])
 
+
   return (
+    <ThemeProvider theme={theme}>
+      <Box sx={{ display: 'flex', minHeight: '100vh' }}>
+        <CssBaseline />
+        <Box
+          component="nav"
+          sx={{ width: { sm: drawerWidth }, flexShrink: { sm: 0 } }}
+        >
+          {isSmUp ? null : (
+            <Navigator
+              PaperProps={{ style: { width: drawerWidth } }}
+              variant="temporary"
+              open={mobileOpen}
+              onClose={handleDrawerToggle}
+            />
+          )}
 
-    <Container maxWidth="lg">
-      <Header title="SHARED" leftActionPage="Pricing" />
-      <main>
-        <MainFeaturedPost post={mainFeaturedPost} />
-        {sites.length !== 0 ?
-          <Grid container spacing={4}>
-            {sites.map((post, index) => (
-              <FeaturedPost key={post._id} post={{ ...featuredPosts[index], title: post.subdomain, ...post }} handleSsl={handleSsl} handleDelete={handleDelete} />
-            ))}
-          </Grid>
-          :
-          <>
-            <UploadFiles handleGetFiles={handleGetFiles} />
-          </>
-        }
+          <Navigator
+            PaperProps={{ style: { width: drawerWidth } }}
+            sx={{ display: { sm: 'block', xs: 'none' } }}
+          />
+        </Box>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+ 
+          <Routes>
 
-
-      </main>
-    </Container>
-
-
+<Route path="/" element={  <ProjectSetup/>} />
+<Route path="/service" element={  <Hosting/>} />
+<Route path="/setup/:setupType" element={  <Setup/>} />
+<Route path="/hosting" element={  <Hosting/>} />
+</Routes>
+                
+          <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>
+            <CopyRight />
+          </Box>
+        </Box>
+      </Box>
+    </ThemeProvider>
   );
 }

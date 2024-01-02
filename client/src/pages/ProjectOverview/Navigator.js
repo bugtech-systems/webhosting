@@ -17,6 +17,7 @@ import SettingsInputComponentIcon from '@mui/icons-material/SettingsInputCompone
 import TimerIcon from '@mui/icons-material/Timer';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PhonelinkSetupIcon from '@mui/icons-material/PhonelinkSetup';
+import { Link } from 'react-router-dom';
 
 const categories = [
   {
@@ -27,24 +28,24 @@ const categories = [
         icon: <PeopleIcon />,
         active: true,
       }, */
-      { id: 'Hosting', icon: <PublicIcon />, active: true },
-      { id: 'Database', icon: <DnsRoundedIcon /> },
-      { id: 'Storage', icon: <PermMediaOutlinedIcon /> },
-      { id: 'Functions', icon: <SettingsEthernetIcon /> },
-      {
+      { id: 'Hosting', icon: <PublicIcon />, path: "/dashboard/hosting" },
+      { id: 'Database', icon: <DnsRoundedIcon />, path: "/dashboard/databases" },
+      { id: 'Storage', icon: <PermMediaOutlinedIcon />, path: "/dashboard/storage" },
+      // { id: 'Functions', icon: <SettingsEthernetIcon /> },
+ /*      {
         id: 'Machine learning',
         icon: <SettingsInputComponentIcon />,
-      },
+      }, */
     ],
   },
-  {
-    id: 'Quality',
-    children: [
-      { id: 'Analytics', icon: <SettingsIcon /> },
-      { id: 'Performance', icon: <TimerIcon /> },
-      { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
-    ],
-  },
+  // {
+  //   id: 'Quality',
+  //   children: [
+  //     { id: 'Analytics', icon: <SettingsIcon /> },
+  //     { id: 'Performance', icon: <TimerIcon /> },
+  //     { id: 'Test Lab', icon: <PhonelinkSetupIcon /> },
+  //   ],
+  // },
 ];
 
 const item = {
@@ -71,20 +72,21 @@ export default function Navigator(props) {
         <ListItem sx={{ ...item, ...itemCategory, fontSize: 22, color: '#fff' }}>
           Sharewin
         </ListItem>
-        <ListItem sx={{ ...item, ...itemCategory }}>
+        <ListItem component={Link} to="/dashboard/project" sx={{ ...item, ...itemCategory }} >
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
           <ListItemText>Project Overview</ListItemText>
         </ListItem>
+        
         {categories.map(({ id, children }) => (
           <Box key={id} sx={{ bgcolor: '#101F33' }}>
             <ListItem sx={{ py: 2, px: 3 }}>
               <ListItemText sx={{ color: '#fff' }}>{id}</ListItemText>
             </ListItem>
-            {children.map(({ id: childId, icon, active }) => (
-              <ListItem disablePadding key={childId}>
-                <ListItemButton selected={active} sx={item}>
+            {children.map(({ id: childId, icon, active, path }) => (
+              <ListItem disablePadding key={childId} component={Link} to={path} >
+                <ListItemButton sx={item}>
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>

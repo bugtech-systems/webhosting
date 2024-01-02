@@ -15,21 +15,26 @@ import Tabs from '@mui/material/Tabs';
 import Toolbar from '@mui/material/Toolbar';
 import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
+import { SET_CREATE } from 'redux/actions/types';
+import { useDispatch } from 'react-redux';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
 
-  function a11yProps(index) {
-    return {
-      id: `simple-tab-${index}`,
-      'aria-controls': `simple-tabpanel-${index}`,
-    };
-  }
 
 
 function Header(props) {
     const navigate = useNavigate();
-  const { onDrawerToggle, activeTab, setActiveTab } = props;
+    const dispatch = useDispatch()
+  
+  const { onDrawerToggle, activeTab, setActiveTab, hasProject } = props;
+
+
+  const handleCreate = (e) => {
+    e.preventDefault();
+    dispatch({type: SET_CREATE})
+    navigate('/dashboard')
+  }
 
   return (
     <React.Fragment>
@@ -90,23 +95,27 @@ function Header(props) {
           <Grid container alignItems="center" spacing={1}>
             <Grid item xs>
               <Typography color="inherit" variant="h5" component="h1">
-                Web Setup
+             MY PROJECTS
               </Typography>
             </Grid>
             <Grid item>
+            {hasProject &&
               <Button
                 sx={{ borderColor: lightColor }}
                 variant="outlined"
                 color="inherit"
                 size="small"
-                onClick={() => navigate('/docs') }
+                onClick={handleCreate}
               >
-                Go to docs 
+                Create New
               </Button>
+              }
             </Grid>
             <Grid item>
               <Tooltip title="Help">
-                <IconButton color="inherit">
+                <IconButton color="inherit"
+                  onClick={() => navigate('/docs') }
+                >
                   <HelpIcon />
                 </IconButton>
               </Tooltip>
@@ -114,13 +123,13 @@ function Header(props) {
           </Grid>
         </Toolbar>
       </AppBar>
-      <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
+   {/*    <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
         <Tabs value={activeTab} textColor="inherit" onChange={setActiveTab}>
           <Tab label="NodeJS" {...a11yProps(0)} />
           <Tab label="ReactJS" {...a11yProps(1)} />
           <Tab label="WordPress"{...a11yProps(2)}/>
         </Tabs>
-      </AppBar>
+      </AppBar> */}
     </React.Fragment>
   );
 }
