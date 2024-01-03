@@ -34,6 +34,8 @@ Execute the following command to build and run the project using Docker Compose:
 ```
 docker-compose up --build
 ```
+This command will build the Docker images and start the containers. Access the platform at http://localhost:80.
+
 
 #### Note:
 This project was created as a test project for a technical exam.
