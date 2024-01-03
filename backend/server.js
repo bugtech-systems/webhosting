@@ -8,7 +8,7 @@ const bodyParser = require('body-parser');
 
 
 const app = express();
-const port = process.env.PORT || 5000;
+const port = process.env.PORT || 3001;
 app.use(bodyParser.json({limit: '1gb'}));
 app.use(cors({ origin: '*' }));
 
