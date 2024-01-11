@@ -11,6 +11,7 @@ import UploadFile from './components/UploadFile';
 import NotFound from './pages/NotFound';
 import Pricing from './pages/Pricing';
 import './App.css'
+import Cart from './pages/Cart';
 
 const defaultTheme = createTheme();
 
@@ -57,6 +58,11 @@ function App() {
                   </PrivateRoute>
                 }
               />
+              <Route 
+                path="/cart"  
+                element={
+                  <Cart />
+              } />
               <Route path="/signup" element={
                 <PublicRoute>
                   <Signup />
