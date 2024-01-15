@@ -9,6 +9,7 @@ import Dashboard from './pages/Dashboard';
 // import UploadFile from './components/UploadFile';
 import NotFound from './pages/NotFound';
 import Pricing from './pages/Pricing';
+import Faq from './pages/Faq';
 import './App.css'
 
 const defaultTheme = createTheme();
@@ -41,6 +42,7 @@ function App() {
 
               <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route path="/pricing" element={<Pricing />} />
+              <Route path="/faq" element={<Faq />} />
               <Route path="/dashboard/*" exact element={
                 <PrivateRoute>
                   <Dashboard />

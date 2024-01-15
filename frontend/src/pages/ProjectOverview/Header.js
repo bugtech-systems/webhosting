@@ -5,6 +5,7 @@ import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import Grid from '@mui/material/Grid';
 import HelpIcon from '@mui/icons-material/Help';
+import InfoIcon from '@mui/icons-material/Info';
 import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -54,6 +55,13 @@ function Header(props) {
               </IconButton>
             </Grid>
             <Grid item xs />
+            <Grid item>
+            <Tooltip title="Help Center">
+            <IconButton color="inherit" component={Link} to="/faq" >
+              <InfoIcon />
+            </IconButton>
+          </Tooltip>
+            </Grid>
             <Grid item>
             <Tooltip title="Help">
             <IconButton color="inherit" component={Link} to="/pricing" >
