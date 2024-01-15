@@ -45,9 +45,13 @@ const faqData = [
     answer: 'Consider your website requirements, traffic, and budget. Shared hosting is cost-effective for small sites, while dedicated hosting offers more resources for larger projects.',
   },
   {
-    question: 'How Can I Change My Subscribtions?',
+    question: 'How Can I Change My Subscriptions?',
     answer: 'Consider your website requirements, traffic, and budget. Shared hosting is cost-effective for small sites, while dedicated hosting offers more resources for larger projects.',
   },
+  /* {
+    question: 'How Can I Change My Subscriptions?',
+    answer: 'Consider your website requirements, traffic, and budget. Shared hosting is cost-effective for small sites, while dedicated hosting offers more resources for larger projects.',
+  }, */
   // Add more FAQ items as needed
 ];
 
