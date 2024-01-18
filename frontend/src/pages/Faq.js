@@ -5,19 +5,39 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import SearchIcon from "@mui/icons-material/Search";
 import { styled } from '@mui/material/styles';
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
+import TextField from "@mui/material/TextField";
 import Header from '../components/Header';
-import { AppBar } from '@mui/material';
-import Toolbar from '@mui/material/Toolbar';
+import { AppBar, IconButton, Link } from '@mui/material';
+import Toolbar from '@mui/material/Toolbar';  
 import MainFeaturedPost from 'components/MainFeaturedPost';
 
+const SearchBar = ({ setSearchQuery }) => (
+  <form>
+    <TextField
+      id="search-bar"
+      className="text"
+      /* onInput={(e) => {
+        setSearchQuery(e.target.value);
+      }} */
+      label="Search our Help Pages"
+      variant="outlined"
+      placeholder="Search..."
+      size="small"
+    />
+    <IconButton type="submit" aria-label="search">
+      <SearchIcon style={{ fill: "blue" }} />
+    </IconButton>
+  </form>
+);
 
 const mainFeaturedPost = {
   title: 'Frequently Ask Questions',
   description:
-    "Ultra-fast and reliable hosting for your non-profit. Ask how you can save with our exclusive discount.",
+    "Have questions? Here you'll find the answer most valued by our partners, along with access to step-by-step instructions and support.",
   image: 'https://source.unsplash.com/random?wallpapers',
   imageText: 'main image description',
   linkText: 'Continue reading…',
@@ -59,6 +79,7 @@ const useStyles = styled((theme) => ({
   container: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(6),
+
   },
   accordion: {
     marginBottom: theme.spacing(2),
@@ -86,27 +107,72 @@ const Faq = () => {
       <Container maxWidth="lg">
     <Header title="FAQ's" leftActionPage="Dashboard" />
       <MainFeaturedPost post={mainFeaturedPost} />
-        <Container className={classes.container}>
-          {faqData.map((item, index) => (
-            <Accordion
-              key={index}
-              expanded={expanded === `panel${index}`}
-              onChange={handleChange(`panel${index}`)}
-              className={classes.accordion}
-            >
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls={`panel${index}bh-content`}
-                id={`panel${index}bh-header`}
-              >
-                <Typography>{item.question}</Typography>
-              </AccordionSummary>
-              <AccordionDetails>
-                <Typography>{item.answer}</Typography>
-              </AccordionDetails>
-            </Accordion>
-          ))}
-        </Container>
+      <Grid container flexDirection= "row" justifyContent="center" marginTop="20px">
+      <Grid item xs={12} md={12}>
+      <Grid container flexDirection= "row" justifyContent="flex-end" marginTop="20px">
+      <Grid item xs={6} md={6}>
+      <Container className={classes.container}>
+      <Typography
+                        component="h1"
+                        variant="h2"
+                        align="flex-start"
+                        color="text.primary"
+                        gutterBottom
+                    >
+                        Need a hand?
+                        We Got you.
+                    </Typography>
+      <SearchBar/>
+      <div style={{ padding: 5 }}>
+          <div
+            className="text"
+            style={{
+              padding: 5,
+              justifyContent: "normal",
+              fontSize: 20,
+              color: "blue",
+              margin: 1,
+              width: "250px",
+              BorderColor: "green",
+              borderWidth: "10px"
+            }}
+          >
+          </div>
+      </div>
+    </Container>
+    </Grid>
+    <Grid item xs={6} md={6}>
+      <Container className={classes.container}>
+      {faqData.map((item, index) => (
+        <Accordion
+          key={index}
+          expanded={expanded === `panel${index}`}
+          onChange={handleChange(`panel${index}`)}
+          className={classes.accordion}
+        >
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls={`panel${index}bh-content`}
+            id={`panel${index}bh-header`}
+          >
+            <Typography>{item.question}</Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography>{item.answer}</Typography>
+          </AccordionDetails>
+        </Accordion>
+      ))}
+    </Container>
+
+    </Grid>
+      </Grid>
+      
+      <Grid>
+      
+      </Grid>
+      </Grid>
+    </Grid>
+       
         <Grid container justifyContent="center" marginTop="20px">
           <Grid item xs={12} md={6}>
             <Button fullWidth variant="contained" className={classes.button}>
