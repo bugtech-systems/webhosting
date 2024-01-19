@@ -12,8 +12,26 @@ import Button from '@mui/material/Button';
 import TextField from "@mui/material/TextField";
 import Header from '../components/Header';
 import { AppBar, IconButton, Link } from '@mui/material';
-import Toolbar from '@mui/material/Toolbar';  
+import Toolbar from '@mui/material/Toolbar';
 import MainFeaturedPost from 'components/MainFeaturedPost';
+
+
+const StyledContainer = styled(Container)({
+  paddingTop: theme => theme.spacing(8),
+  paddingBottom: theme => theme.spacing(6),
+});
+
+const StyledAccordion = styled(Accordion)({
+  marginBottom: theme => theme.spacing(2),
+});
+
+const StyledButton = styled(Button)({
+  backgroundColor: theme => theme.palette.primary.main,
+  color: theme => theme.palette.primary.contrastText,
+  '&:hover': {
+    backgroundColor: theme => theme.palette.primary.dark,
+  },
+});
 
 const SearchBar = ({ setSearchQuery }) => (
   <form>
@@ -68,11 +86,6 @@ const faqData = [
     question: 'How Can I Change My Subscriptions?',
     answer: 'Consider your website requirements, traffic, and budget. Shared hosting is cost-effective for small sites, while dedicated hosting offers more resources for larger projects.',
   },
-  /* {
-    question: 'How Can I Change My Subscriptions?',
-    answer: 'Consider your website requirements, traffic, and budget. Shared hosting is cost-effective for small sites, while dedicated hosting offers more resources for larger projects.',
-  }, */
-  // Add more FAQ items as needed
 ];
 
 const useStyles = styled((theme) => ({
@@ -93,9 +106,15 @@ const useStyles = styled((theme) => ({
   },
 }));
 
-const Faq = () => {
+export default function Faq() {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  
+  const sections = [
+    { title: 'Section 1', url: '/section1' },
+    { title: 'Section 2', url: '/section2' },
+    // Add more sections as needed
+  ];
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -103,86 +122,82 @@ const Faq = () => {
 
   return (
     <>
-      
-      <Container maxWidth="lg">
-    <Header title="FAQ's" leftActionPage="Dashboard" />
-      <MainFeaturedPost post={mainFeaturedPost} />
-      <Grid container flexDirection= "row" justifyContent="center" marginTop="20px">
-      <Grid item xs={12} md={12}>
-      <Grid container flexDirection= "row" justifyContent="flex-end" marginTop="20px">
-      <Grid item xs={6} md={6}>
-      <Container className={classes.container}>
-      <Typography
-                        component="h1"
-                        variant="h2"
-                        align="flex-start"
-                        color="text.primary"
-                        gutterBottom
-                    >
-                        Need a hand?
-                        We Got you.
-                    </Typography>
-      <SearchBar/>
-      <div style={{ padding: 5 }}>
-          <div
-            className="text"
-            style={{
-              padding: 5,
-              justifyContent: "normal",
-              fontSize: 20,
-              color: "blue",
-              margin: 1,
-              width: "250px",
-              BorderColor: "green",
-              borderWidth: "10px"
-            }}
-          >
-          </div>
-      </div>
-    </Container>
-    </Grid>
-    <Grid item xs={6} md={6}>
-      <Container className={classes.container}>
-      {faqData.map((item, index) => (
-        <Accordion
-          key={index}
-          expanded={expanded === `panel${index}`}
-          onChange={handleChange(`panel${index}`)}
-          className={classes.accordion}
-        >
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            aria-controls={`panel${index}bh-content`}
-            id={`panel${index}bh-header`}
-          >
-            <Typography>{item.question}</Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography>{item.answer}</Typography>
-          </AccordionDetails>
-        </Accordion>
-      ))}
-    </Container>
 
-    </Grid>
-      </Grid>
-      
-      <Grid>
-      
-      </Grid>
-      </Grid>
-    </Grid>
-       
-        <Grid container justifyContent="center" marginTop="20px">
-          <Grid item xs={12} md={6}>
-            <Button fullWidth variant="contained" className={classes.button}>
-              Contact Us
-            </Button>
+      <StyledContainer maxWidth="lg">
+
+        <Header sections={sections} title="FAQ" leftActionPage="Dashboard" />
+        <MainFeaturedPost post={mainFeaturedPost} />
+        <Grid container flexDirection="row" justifyContent="center" marginTop="20px">
+          <Grid item xs={12} md={12}>
+            <Grid container flexDirection="row" justifyContent="flex-end" marginTop="20px">
+              <Grid item xs={6} md={6}>
+                <StyledContainer className={classes.container}>
+                  <Typography
+                    component="h1"
+                    variant="h2"
+                    align="left"
+                    color="text.primary"
+                    gutterBottom
+                  >
+                    Need a hand?
+                    We Got you.
+                  </Typography>
+                  <SearchBar />
+                  <div style={{ padding: 5 }}>
+                    <div
+                      className="text"
+                      style={{
+                        padding: 5,
+                        justifyContent: "normal",
+                        fontSize: 20,
+                        color: "blue",
+                        margin: 1,
+                        width: "250px",
+                        BorderColor: "green",
+                        borderWidth: "10px"
+                      }}
+                    >
+                    </div>
+                  </div>
+                </StyledContainer>
+              </Grid>
+              <Grid item xs={6} md={6}>
+                <StyledContainer className={classes.container}>
+                  {faqData.map((item, index) => (
+                    <StyledAccordion
+                      key={index}
+                      expanded={expanded === `panel${index}`}
+                      onChange={handleChange(`panel${index}`)}
+                      className={classes.accordion}
+                    >
+                      <AccordionSummary
+                        expandIcon={<ExpandMoreIcon />}
+                        aria-controls={`panel${index}bh-content`}
+                        id={`panel${index}bh-header`}
+                      >
+                        <Typography>{item.question}</Typography>
+                      </AccordionSummary>
+                      <AccordionDetails>
+                        <Typography>{item.answer}</Typography>
+                      </AccordionDetails>
+                    </StyledAccordion>
+                  ))}
+                </StyledContainer>
+                </Grid>
+            </Grid>
+            <Grid>
+            </Grid>
           </Grid>
         </Grid>
-      </Container>
+        <Grid container justifyContent="center" marginTop="20px">
+          <Grid item xs={12} md={6}>
+            <StyledButton fullWidth variant="contained" className={classes.button}>
+              Contact Us
+            </StyledButton>
+          </Grid>
+        </Grid>
+      </StyledContainer>
     </>
   );
 };
 
-export default Faq;
