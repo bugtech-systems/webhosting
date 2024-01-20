@@ -12,20 +12,37 @@ function Header(props) {
     const isAuthenticated = localStorage.getItem('token');
 
     const handleLogout = (event) => {
-        event.preventDefault()
+        event.preventDefault();
         localStorage.removeItem('token');
-        window.location.href = "/login"
-    }
+        window.location.href = "/login";
+    };
 
+    const renderLeftAction = () => {
+        if (leftActionPage === 'Dashboard') {
+            return (
+                <Button component={Link} to="/dashboard" size="small" variant="outlined">
+                    Dashboard
+                </Button>
+            );
+        } else if (leftActionPage === 'FAQ') {
+            return (
+                <Button component={Link} to="/faq" size="small" variant="outlined">
+                    FAQ
+                </Button>
+            );
+        } else {
+            return (
+                <Button component={Link} to="/pricing" size="small" variant="outlined">
+                    Subscribe
+                </Button>
+            );
+        }
+    };
 
     return (
         <React.Fragment>
             <Toolbar sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                {leftActionPage === 'Dashboard' ?
-                    <Button component={Link} to="/dashboard" size="small" variant="outlined">Dashboard</Button>
-                    :
-                    <Button component={Link} to="/pricing" size="small" variant="outlined">Subscribe</Button>
-                }
+                {renderLeftAction()}
 
                 <Typography
                     component="h2"
@@ -46,9 +63,7 @@ function Header(props) {
                         Sign up
                     </Button>
                 }
-
             </Toolbar>
-
         </React.Fragment>
     );
 }
@@ -61,6 +76,7 @@ Header.propTypes = {
         }),
     ).isRequired,
     title: PropTypes.string.isRequired,
+    leftActionPage: PropTypes.string.isRequired,
 };
 
 export default Header;

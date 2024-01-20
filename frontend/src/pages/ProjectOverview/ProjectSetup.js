@@ -12,14 +12,14 @@ import Projects from './Projects';
 import { verifyProjectName } from 'redux/actions/data.action';
 
 
-const mainFeaturedPost = {
-  title: 'Hosting Made Easy',
-  description:
-    "Easiest Way to Launch Your Website online: Drag, Drop, Done!",
-  image: 'https://source.unsplash.com/random?wallpapers',
-  imageText: 'main image description',
-  linkText: 'Continue reading…',
-};
+  const mainFeaturedPost = {
+    title: 'Hosting Made Easy',
+    description:
+      "Easiest Way to Launch Your Website online: Drag, Drop, Done!",
+    image: 'https://source.unsplash.com/random?wallpapers',
+    imageText: 'main image description',
+    linkText: 'Continue reading…',
+  };
 
 export default function ProjectSetup() {
   const dispatch = useDispatch()
