@@ -8,8 +8,8 @@ const FileUpload = ({ uploadFile, progress, selectedFiles, currentFile }) => {
 
     return (
         <React.Fragment>
-      <Typography variant="h6" gutterBottom>
-       Project Files (compressed)
+      <Typography variant="body1" gutterBottom>
+       Project Folder (compressed)
       </Typography>
                    {currentFile && (
                 <div className="progress mb-3">

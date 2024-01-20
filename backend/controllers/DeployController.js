@@ -2,16 +2,29 @@
 const fs = require('fs');
 const path = require('path');
 const File = require('../models/FileModel');
-const axios = require('axios');
-const cheerio = require('cheerio');
+const Project = require('../models/ProjectModel');
+const { v4: uuidv4 } = require('uuid');
+
 const { exec } = require('child_process');
-
-const { getFiles } = require('../utils/helpers');
-// Multer setup for file upload
-const{fileURLToPath} = require('url');
-
-
+let storagePath = process.env.STORAGE_PATH;
 module.exports = {
+    checkAvailability: async (req, res) => {
+        let { projectName, projectId } = req.body;
+        try {
+            if (!projectName) {
+                return res.status(404).json({ error: 'Project Name is required!' })
+            }
+
+            let available = await Project.findOne({ $and: [{ projectDomain: projectId}, {isDeleted: false}] })
+
+
+            res.status(200).json({ availability: available ? false : true })
+
+        } catch (error) {
+
+            res.status(500).json({ error: 'Something went wrong!' });
+        }
+    },
     uploadFile: async (req, res) => {
         let { projectName } = req.query;
         try {
@@ -20,8 +33,7 @@ module.exports = {
               }
           
               const uploadedFile = req.file;
-              const projectDir = path.join(process.cwd(), 'uploads', uploadedFile.originalname);
-            console.log(projectDir, process.cwd(), uploadedFile.originalname, req.file)
+              const projectDir = path.join(storagePath, uuidv4());
               // Save the uploaded zip file
               fs.writeFileSync(projectDir, uploadedFile.buffer);
           

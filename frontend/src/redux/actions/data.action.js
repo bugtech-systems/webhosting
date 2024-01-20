@@ -16,7 +16,7 @@ export const uploadFile = (data) => dispatch => {
 
 export const verifyProjectName = (data) => dispatch => {
   //  dispatch(fetchStart());
-  return axios.post(`${env_vars.api_url}/file/verify`, data, {
+  return axios.post(`${env_vars.api_url}/deployment/verify`, data, {
     headers: {
       'Content-Type': 'application/json',
     },

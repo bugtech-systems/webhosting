@@ -21,7 +21,7 @@ import FileUploadService from 'utils/FileUploadService';
 
 
 const steps = ['Project Files', 
-// 'Project Configurations', 
+'Project Configurations', 
 'Review Details'];
 
 
@@ -42,9 +42,9 @@ export default function Setup() {
     switch (step) {
       case 0:
         return <FileUpload handleGetFiles={handleGetFiles} uploadFile={uploadFile} progress={progress} currentFile={currentFile} />;
-      // case 1:
-        // return setupType === 'react' ? <ReactConfig /> : <PaymentForm />;
       case 1:
+         return setupType === 'react' ? <ReactConfig /> : <PaymentForm />;
+      case 2:
         return <Review />;
       default:
         throw new Error('Unknown step');
@@ -111,7 +111,11 @@ export default function Setup() {
       // setActiveStep(activeStep + 1);
 
   const handleBack = () => {
-    setActiveStep(activeStep - 1);
+    if(activeStep === 0){
+      navigate(-1)    
+    } else {
+      setActiveStep(activeStep - 1);
+    }
   };
   
   const handleDrawerToggle = () => {
@@ -126,7 +130,7 @@ export default function Setup() {
       <Box component="main" sx={{ flex: 1, py: 1, px: 1, bgcolor: '#eaeff1' }}>
           <Container sx={{ pt: 3 }} maxWidth="md">
         <Paper variant="outlined" sx={{ my: { xs: 3, md: 6 }, p: { xs: 2, md: 3 } }}>
-           <Typography component="h1" variant="h5" align="center">
+           <Typography component="h1" variant="h6" align="center">
           {setupType === 'react' ? "ReactJS Deployment" : setupType === 'express' ? "NodeJS/Express Deployment" : "Wordpress Deployment"}   
           </Typography> 
    
@@ -155,11 +159,9 @@ export default function Setup() {
             <React.Fragment>
               {getStepContent(activeStep)}
               <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
-                {activeStep !== 0 && (
                   <Button onClick={handleBack} sx={{ mt: 3, ml: 1 }}>
                     Back
                   </Button>
-                )}
 
                 <Button
                   variant="contained"

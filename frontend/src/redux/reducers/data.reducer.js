@@ -4,7 +4,8 @@ import { SET_PROJECTS, CLEAR_PROJECTS, SET_PROJECT_NAME, CLEAR_PROJECT_NAME } fr
 const INIT_STATE = {
   projects: [],
   searchString: '',
-  projectName: ''
+  projectName: '',
+  projectId: ''
 
 };
 
@@ -28,13 +29,15 @@ export default (state = INIT_STATE, action) => {
     case SET_PROJECT_NAME: {
       return {
         ...state,
-        projectName: payload
+        projectName: payload.projectName,
+        projectId: payload.projectId
       };
     }
     case CLEAR_PROJECT_NAME: {
       return {
         ...state,
-        projectName: ''
+        projectName: '',
+        projectId: ''
       };
     }
     

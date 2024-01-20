@@ -1,5 +1,5 @@
 // client/src/App.js
-import React from 'react';
+import React, { useEffect } from 'react';
 import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import NotFound from './pages/NotFound';
 import Pricing from './pages/Pricing';
 import './App.css'
+import axios from 'axios';
 
 const defaultTheme = createTheme();
 
@@ -29,6 +30,22 @@ function App() {
     // const isLicensed = localStorage.getItem('isLicensed');
     return !isAuthenticated ? children : <Navigate to="/" />;
   }
+
+
+
+  useEffect(() => {
+    const token = localStorage.getItem('token')
+
+    if (!token) {
+      return
+    }
+
+
+
+    axios.defaults.headers.common['Authorization'] = `Bearer ${token}`;
+
+  }, [])
+
 
 
   return (
