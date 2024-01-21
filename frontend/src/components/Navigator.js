@@ -79,7 +79,7 @@ console.log(!projectName, 'PROJ', projectName)
                 <ListItemButton 
                   sx={item} component={Link} 
                   to={path}  
-                  // disabled={(disabled || !projectName)}
+                  disabled={(disabled || !projectName)}
                 >
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
