@@ -12,6 +12,7 @@ import Pricing from './pages/Pricing';
 import Faq from './pages/Faq';
 import './App.css'
 import axios from 'axios';
+import Checkout from 'pages/Checkout/Checkout';
 
 const defaultTheme = createTheme();
 
@@ -56,11 +57,16 @@ function App() {
                 <CssBaseline />
           <div>
             <Routes>
+            
+            
+            
+            
 
               <Route path="/" element={<Navigate to="/dashboard" />} />
               <Route path="/pricing" element={<Pricing />} />
               <Route path="/faq" element={<Faq />} />
-              <Route path="/dashboard/*" exact element={
+            <Route path="/checkout" element={<Checkout />} />
+            <Route path="/dashboard/*" exact element={
                 <PrivateRoute>
                   <Dashboard />
                 </PrivateRoute>
@@ -74,6 +80,10 @@ function App() {
                 <PublicRoute>
                   <Login />
                 </PublicRoute>} />
+                /* <Route path="/Checkout" element={
+                  <PublicRoute>
+                    <Checkout />
+                  </PublicRoute>} /> */
 
               <Route element={<NotFound />} />
             </Routes>

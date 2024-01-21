@@ -56,7 +56,7 @@ export default function Services() {
         alt="green iguana"
         height="150"
         sx={{
-                      height:{ xs: '200px', md: '150px'},
+                      height:{ xs: '100%', md: '100%'},
                     p: '10px'
                     }}
                     

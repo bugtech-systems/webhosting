@@ -14,6 +14,7 @@ import Tooltip from '@mui/material/Tooltip';
 import Typography from '@mui/material/Typography';
 import { SET_CREATE } from 'redux/actions/types';
 import { useDispatch, useSelector } from 'react-redux';
+import { Box, styled, Paper } from '@mui/material';
 
 const lightColor = 'rgba(255, 255, 255, 0.7)';
 
@@ -24,6 +25,8 @@ function Header(props) {
     const navigate = useNavigate();
     const dispatch = useDispatch()
     const { createNew } = useSelector(({ui}) => ui);
+    
+    console.log(createNew, "TITLE?")
 
   const { onDrawerToggle, hasProject } = props;
 
@@ -38,11 +41,20 @@ function Header(props) {
     dispatch({type: SET_CREATE})
     navigate('/dashboard')
   }
+  
+  const Item = styled(Paper)(({ theme }) => ({
+    backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
+    ...theme.typography.body2,
+    padding: theme.spacing(1),
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  }));
 
   return (
     <React.Fragment>
       <AppBar color="primary" position="sticky" elevation={0}>
         <Toolbar>
+        <Box sx={{ flexGrow: 1, display: 'flex', flexDirection: 'row' }}>
           <Grid container spacing={1} alignItems="center">
             <Grid sx={{ display: { sm: 'none', xs: 'block' } }} item>
               <IconButton
@@ -54,6 +66,7 @@ function Header(props) {
                 <MenuIcon />
               </IconButton>
             </Grid>
+            
             <Grid item xs />
             <Grid item>
             <Tooltip title="Help Center">
@@ -88,9 +101,10 @@ function Header(props) {
           </Button>
             </Grid>
           </Grid>
+          </Box>
         </Toolbar>
       </AppBar>
-      <AppBar
+      {/* <AppBar
         component="div"
         color="primary"
         position="static"
@@ -122,7 +136,7 @@ function Header(props) {
             </Grid>
           </Grid>
         </Toolbar>
-      </AppBar>
+      </AppBar> */}
    {/*    <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
         <Tabs value={activeTab} textColor="inherit" onChange={setActiveTab}>
           <Tab label="NodeJS" {...a11yProps(0)} />

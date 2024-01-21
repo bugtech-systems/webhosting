@@ -78,21 +78,7 @@ function Header(props) {
         elevation={0}
         sx={{ zIndex: 0 }}
       >
-        <Toolbar>
-          <Grid container alignItems="center" spacing={1}>
-            <Grid item xs>
-              <Typography color="inherit" variant="h5" component="h1">
-                Service Setup
-              </Typography>
-            </Grid>
-            <Grid item>
-             
-            </Grid>
-            <Grid item>
-              
-            </Grid>
-          </Grid>
-        </Toolbar>
+       
       </AppBar>
      {/*  <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
         <Tabs value={activeTab} textColor="inherit" onChange={setActiveTab}>

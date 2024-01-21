@@ -13,6 +13,7 @@ import Hosting from './Hosting';
 import ProjectSetup from 'pages/ProjectOverview/ProjectSetup';
 import { useDispatch, useSelector } from 'react-redux';
 import { SET_MOBILE_OPEN, SET_PROJECTS } from 'redux/actions/types';
+import Database from 'components/SidebarItems/Database';
 
 
 function CustomTabPanel(props) {
@@ -241,6 +242,8 @@ export default function Paperbase() {
           <Routes>
 <Route path="/" element={  <ProjectSetup/>} />
 <Route path="/service" element={  <Hosting/>} />
+<Route path="/databases" element={  <Database/>} />
+
 <Route path="/setup/:setupType" element={  <Setup  />} />
 </Routes>
           <Box component="footer" sx={{ p: 2, bgcolor: '#eaeff1' }}>

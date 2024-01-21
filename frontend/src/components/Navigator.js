@@ -76,7 +76,11 @@ console.log(!projectName, 'PROJ', projectName)
             </ListItem>
             {children.map(({ id: childId, icon, active, path, disabled }) => (
               <ListItem disablePadding key={childId}   >
-                <ListItemButton sx={item} component={Link} to={path} disabled={(disabled || !projectName)}>
+                <ListItemButton 
+                  sx={item} component={Link} 
+                  to={path}  
+                  // disabled={(disabled || !projectName)}
+                >
                   <ListItemIcon>{icon}</ListItemIcon>
                   <ListItemText>{childId}</ListItemText>
                 </ListItemButton>
