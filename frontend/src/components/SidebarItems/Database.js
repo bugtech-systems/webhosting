@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import AppBar from '@mui/material/AppBar';
 import Button from '@mui/material/Button';
 import CameraIcon from '@mui/icons-material/PhotoCamera';
@@ -22,6 +22,7 @@ import Header from 'pages/Header';
 import { SET_MOBILE_OPEN } from 'redux/actions/types';
 import { useSelector, useDispatch } from 'react-redux';
 import Bio from 'components/Bio';
+import CustomModal from 'components/Modals/CustomModal';
 
 const cards = [
   {
@@ -44,11 +45,33 @@ const cards = [
   }
 ];
 
+const values = [
+  {
+    id: 0,
+    value: 'MongoDB',
+    title: ['Database name', 'Collection name'],
+    additionalPreference: ['MongoDb Option 1', 'MongoDb Option 2', 'MongoDb Option 3']
+  },
+  {
+    id: 1,
+    value: 'MySQL',
+    title: ['Database name', 'Collection name'],
+    additionalPreference: ['MySQL Option 1', 'MySQL Option 2', 'MySQL Option 3']
+  },
+  {
+    id: 2,
+    value: 'PostgreSQL',
+    title: ['Database name', 'Collection name'],
+    additionalPreference: ['PostgreSQL Option 1', 'PostgreSQL Option 2', 'PostgreSQL Option 3']
+  }
+]
 
 export default function Database(props) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { mobileOpen } = useSelector(({ ui }) => ui);
+  const [isModalOpen, setModalOpen] = useState('');
+  const [val, setVal] = useState([]);
 
 console.log(props, "Props")
 
@@ -63,6 +86,18 @@ console.log(props, "Props")
     dispatch({ type: SET_MOBILE_OPEN, payload: !mobileOpen });
   };
 
+  const handleOpenModal = (data) => {
+  console.log(data, "DATA")
+    const selectedValue = values.find(item => item.value === data.id);
+    console.log(selectedValue, "??????")
+    setVal(selectedValue ? [selectedValue] : []);
+    setModalOpen(data.id);
+  };
+  
+  const handleCloseModal = () => {
+    setModalOpen(false);
+  }
+  
   return (
     <>
       <Header screenName='' onDrawerToggle={handleDrawerToggle} />
@@ -94,9 +129,11 @@ console.log(props, "Props")
                   <Box sx={{ display: 'flex', justifyContent: 'flex-end' }}>
                     <CardActions >
                       <Button variant="outlined" size="small"
-                        onClick={() => navigate('/checkout')}
+                        id={card.title}
+                        onClick={(e) => handleOpenModal(e.target)}
                         disabled={card.disabled}
                       >Setup</Button>
+                      <CustomModal open={isModalOpen} handleClose={handleCloseModal} values={val}/>
                     </CardActions>
                   </Box>
                 </Card>
