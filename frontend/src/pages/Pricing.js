@@ -16,8 +16,13 @@ import Link from '@mui/material/Link';
 import GlobalStyles from '@mui/material/GlobalStyles';
 import Container from '@mui/material/Container';
 import CopyRight from '../components/CopyRight';
-import Header from '../components/Header';
-
+import { useDispatch, useSelector } from 'react-redux';
+import { SET_MOBILE_OPEN } from 'redux/actions/types';
+import FooterWithInput from 'components/Footer/FooterWithInput';
+import Faq from 'components/Pricing/FAQ';
+import IconPageBreak from 'components/Pricing/IconPageBreak';
+import Header from 'components/Pricing/Header';
+import {COLORS} from 'constants/constants'
 
 const tiers = [
     {
@@ -65,10 +70,58 @@ const tiers = [
     },
 ];
 
+const tiers2 = [
+    {
+        title: 'Free',
+        price: '0',
+        description: [
+            '1 Website included',
+            'Custom Subdomains',
+            '2 GB of storage',
+            'Help center access',
+            'Email support',
+        ],
+        buttonText: 'Sign up for free',
+        authButtonText: 'Get Started',
+        buttonVariant: 'outlined',
+    },
+    {
+        title: 'Pro',
+        subheader: 'Most popular',
+        price: '15',
+        description: [
+            'Up to 10 Websites',
+            'Custom Domains',
+            '10 GB of storage',
+            'Help center access',
+            'Priority email support',
+        ],
+        buttonText: 'Get started',
+        authButtonText: 'Get Started',
+        buttonVariant: 'contained',
+    },
+    {
+        title: 'Enterprise',
+        price: '30',
+        description: [
+            'Unlimited Websites',
+            'Custom Domains',
+            '30 GB of storage',
+            'Help center access',
+            'Phone & email support',
+        ],
+        buttonText: 'Contact us',
+        authButtonText: 'Contact us',
+        buttonVariant: 'outlined',
+    },
+];
 
 export default function Pricing() {
     const navigate = useNavigate();
     const isAuthenticated = localStorage.getItem('token');
+    const dispatch = useDispatch();
+  const { mobileOpen } = useSelector(({ui}) => ui);
+    
 
     const handleClick = (event) => {
         event.preventDefault();
@@ -80,12 +133,45 @@ export default function Pricing() {
 
     }
 
+    const handleLogout = (event) => {
+        event.preventDefault();
+        localStorage.removeItem('token');
+        window.location.href = "/login";
+    };
+    
+    
+    
+    const handleDrawerToggle = () => {
+        dispatch({type: SET_MOBILE_OPEN, payload: !mobileOpen});
+      };
+
     return (
         <>
-            <Container maxWidth="lg">
+        <Container disableGutters={true}>
 
-                <Header title="SHARED HOSTING" leftActionPage="Dashboard" />
-                <Container disableGutters maxWidth="sm" component="main" sx={{ pt: 8, pb: 6 }}>
+            <Toolbar sx={{ borderBottom: 1, borderColor: 'divider'}}>
+
+                <Typography
+                    component="h2"
+                    variant="h5"
+                    color="inherit"
+                    align="center"
+                    noWrap
+                    sx={{ flex: 1 }}
+                >
+                    {"SHARED HOSTING"}
+                </Typography>
+                {isAuthenticated ?
+                    <Button onClick={handleLogout} variant="outlined" size="small">
+                        Logout
+                    </Button>
+                    :
+                    <Button component={Link} to="/signup" variant="outlined" size="small">
+                        Sign up
+                    </Button>
+                }
+            </Toolbar>
+                <Container disableGutters={true} component="main" sx={{ pt: 8, pb: 6, marginLeft: 2, padding: 5 }}>
                     <Typography
                         component="h1"
                         variant="h2"
@@ -102,7 +188,7 @@ export default function Pricing() {
                     <Typography variant="h6" align="center" color="text.secondary" component="p">Your Website's Success, Simplified, Right Here!.
                     </Typography>
                 </Container>
-                <Container maxWidth="md" component="main">
+                <Container disableGutters={true} sx={{padding: 5 }}>
                     <Grid container spacing={5} alignItems="flex-end">
                         {tiers.map((tier) => (
                             // Enterprise card is full width at sm breakpoint
@@ -133,24 +219,24 @@ export default function Pricing() {
                                         <Box
                                             sx={{
                                                 display: 'flex',
-                                                justifyContent: 'center',
+                                                justifyContent: 'flex-start',
                                                 alignItems: 'baseline',
                                                 mb: 2,
                                             }}
                                         >
                                             <Typography component="h2" variant="h3" color="text.primary">
-                                                ${tier.price}
+                                                ₱{tier.price}
                                             </Typography>
                                             <Typography variant="h6" color="text.secondary">
                                                 /mo
                                             </Typography>
                                         </Box>
-                                        <ul>
+                                        <ul style={{ marginLeft: -15}}>
                                             {tier.description.map((line) => (
                                                 <Typography
                                                     component="li"
                                                     variant="subtitle1"
-                                                    align="center"
+                                                    align="left"
                                                     key={line}
                                                 >
                                                     {line}
@@ -167,22 +253,19 @@ export default function Pricing() {
                             </Grid>
                         ))}
                     </Grid>
-                </Container>
-                {/* Footer */}
-                <Container
-                    maxWidth="md"
-                    component="footer"
-                    sx={{
-                        borderTop: (theme) => `1px solid ${theme.palette.divider}`,
-                        mt: 8,
-                        py: [3, 6],
-                    }}
-                >
-
-                    <CopyRight sx={{ mt: 5 }} />
-                </Container>
-            </Container>
+                    
+                    
+                    </Container>
+                    
+                    
+                    {/* Footer */}
+                    
+                    </Container>
+                    <IconPageBreak />
+                    <Faq />
+                    <FooterWithInput />
 
         </>
+        
     );
 }
