@@ -4,8 +4,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const bodyParser = require('body-parser');
-const color = require('colors')
-mongoose.set('strictQuery', true)
+
+mongoose.set('strictQuery', true);
 
 const app = express();
 const port = process.env.PORT || 3001;
@@ -28,11 +28,19 @@ mongoose.connect(process.env.PRIMARY_STRING, {
     const fileRoutes = require('./routes/fileRoutes');
     const deploymentRoutes = require('./routes/deploymentRoutes');
     const userRoutes = require('./routes/userRoutes');  
+    const { executeScript } = require('./utils/pgsqlHelper');
 
 
 app.get('/', (req, res) => {
     res.send('TESTING API!')
 })
+
+// Create a route to trigger the script execution
+app.get('/create-user-database', (req, res) => {
+  executeScript();
+  res.send('Script execution initiated');
+});
+
 
 app.use('/apiv2/auth', authRoutes);
 app.use('/apiv2/file', fileRoutes);

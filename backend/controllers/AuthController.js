@@ -14,14 +14,12 @@ module.exports = {
             }
 
             const user = await User.findOne({ email: req.body.email });
+            
             if (user) {
                 return res.status(400).json({ message: 'Something went wrong!', errors: { email: 'Email is already taken!' } });
             }
-
+            
             const hashedPassword = await bcrypt.hash(req.body.password, 10);
-
-
-
             const newUser = new User({ email: req.body.email, password: hashedPassword, firstName: req.body.firstName, lastName: req.body.lastName });
             await newUser.save();
             res.status(201).json({ message: 'User created successfully' });

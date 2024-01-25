@@ -59,7 +59,7 @@ function MainFeaturedPost(props) {
 }
 
 MainFeaturedPost.propTypes = {
-    post: PropTypes.shape({
+        post: PropTypes.shape({
         description: PropTypes.string.isRequired,
         image: PropTypes.string.isRequired,
         imageText: PropTypes.string.isRequired,

@@ -6,7 +6,7 @@ const Project = require('../models/ProjectModel');
 const { v4: uuidv4 } = require('uuid');
 
 const { exec } = require('child_process');
-let storagePath = process.env.STORAGE_PATH;
+let storagePath = process.env.STORAGE_PATH + '/storageFolder';
 module.exports = {
     checkAvailability: async (req, res) => {
         let { projectName, projectId } = req.body;
@@ -35,10 +35,10 @@ module.exports = {
               const uploadedFile = req.file;
               const projectDir = path.join(storagePath, uuidv4());
               // Save the uploaded zip file
-              fs.writeFileSync(projectDir, uploadedFile.buffer);
+              fs.writeFileSync(`${projectDir}.zip`, uploadedFile.buffer);
           
               // Unzip the project
-             /*  await exec(`unzip ${projectDir} -d ${projectDir.replace('.zip', '')}`, async (error, stdout, stderr) => {
+              await exec(`unzip ${projectDir}.zip -d ${projectDir}`, async (error, stdout, stderr) => {
                 if (error) {
                   console.log(`Error: ${error.message}`);
                   return;
@@ -52,11 +52,11 @@ module.exports = {
           
     
                 
-              }); */
+              }); 
                 
               const file = new File({ projectName, filename: req.file.filename, path: req.file.path, user: req.user?._id });
               await file.save();
-              res.json({message: 'Deployment successful!', projectDir: projectDir.replace('.zip', '')});
+              res.json({message: 'Deployment successful!', projectDir: projectDir});
 
        
             
@@ -71,31 +71,20 @@ module.exports = {
         
         const { startScript,projectFolder,  nodeVersion } = req.body;
     console.log(req.body)
-              await exec(`nvm use ${nodeVersion}`, (error, stdout, stderr) => {
-              console.log(error, stdout, stderr, 'STDD')
-                if (error) {
-                    console.log(`Error: ${error.message}`);
-                    return res.status(400).json({message: 'Installment successful!'});
-                  }
-                  
-                  if (stdout) {
-                    console.log(`Stdout: ${stdout}`);
-                    exec(`cd ${projectFolder} && npm install`, (error1, stdout1, stderr1) => {
-                        console.log(error1, stdout1, stderr1, 'STDD NPM')
-                        if (error) {
-                            console.log(`Error: ${error.message}`);
-                            return res.status(400).json({message: 'Installment successful!'});
-                          }
-                        return res.json({message: 'Installment successful!'});
-
-                    });
-                  //   setResult(`Error: ${stderr}`);
-                  }
+             exec(`nvm use ${nodeVersion}`, (error, stdout, stderr) => {
                     
-              });
+        }); 
+        
+        exec(`cd ${projectFolder} && npm install`, (error1, stdout1, stderr1) => {
+          console.log(error1, stdout1, stderr1, 'STDD NPM')
+          if (error1) {
+              console.log(`Error: ${error1.message}`);
+              return res.status(400).json({message: 'Installment successful!'});
+            }
+          return res.json({message: 'Installment successful!'});
 
-      
-            //   res.json({message: 'Installment successful!'});
+      })
+              // res.json({message: 'Installment successful!'});
 
        
             
