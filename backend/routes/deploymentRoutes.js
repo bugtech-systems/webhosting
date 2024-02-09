@@ -11,7 +11,8 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage: storage });
 
 router.post('/verify', 
-authenticateToken, DeploymentController.checkAvailability);
+// authenticateToken,
+DeploymentController.checkAvailability);
 
 
 router.post('/upload', 

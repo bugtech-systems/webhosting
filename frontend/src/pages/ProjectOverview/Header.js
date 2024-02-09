@@ -104,7 +104,7 @@ function Header(props) {
           </Box>
         </Toolbar>
       </AppBar>
-      {/* <AppBar
+    <AppBar
         component="div"
         color="primary"
         position="static"
@@ -136,7 +136,7 @@ function Header(props) {
             </Grid>
           </Grid>
         </Toolbar>
-      </AppBar> */}
+      </AppBar>
    {/*    <AppBar component="div" position="static" elevation={0} sx={{ zIndex: 0 }}>
         <Tabs value={activeTab} textColor="inherit" onChange={setActiveTab}>
           <Tab label="NodeJS" {...a11yProps(0)} />

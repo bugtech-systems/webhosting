@@ -17,10 +17,10 @@ mongoose.connect(process.env.PRIMARY_STRING, {
     useUnifiedTopology: true,
   })
     .then(() => {
-      console.log(color.green('Connected to MongoDB'));
+      // console.log(color.green('Connected to MongoDB'));
     })
     .catch((error) => {
-      console.error(color.red('Error connecting to MongoDB:'), error.message);
+      // console.error(color.red('Error connecting to MongoDB:'), error.message);
     });
   
   
@@ -48,5 +48,6 @@ app.use('/apiv2/deployment', deploymentRoutes);
 app.use('/apiv2/user', userRoutes);
 
 app.listen(port, () => {
-    console.log(color.blue(`Server is running on port ${color.bold.bgWhite(port)}`));
+console.log(`RUNNING ON PORT ${port}`)
+    // console.log(color.blue(`Server is running on port ${color.bold.bgWhite(port)}`));
 });
