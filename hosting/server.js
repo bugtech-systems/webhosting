@@ -32,7 +32,12 @@ app.post('/api/ssl', async (req, res) => {
     const { subdomain } = req.body;
     try {
 
+
+
         const filePerm = spawn('certbot', ['--nginx', '-d', `${subdomain}.bugtech.online`]);
+        filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+        filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
+
 
         res.send('Ssl Certified Successful');
     } catch (err) {
@@ -141,6 +146,19 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
         const reloadNginx = spawn('service', ['nginx', 'reload']);
         reloadNginx.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
         reloadNginx.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
+        const archivesPath = path.join("/etc/letsencrypt/archive", `${subdomain}.bugtech.online`);
+        const livePath = path.join("/etc/letsencrypt/live", `${subdomain}.bugtech.online`);
+        const renewalPath = path.join("/etc/letsencrypt/renewal", `${subdomain}.bugtech.online`);
+
+
+        if (fs.existsSync(archivesPath) || fs.existsSync(livePath) || fs.existsSync(renewalPath)) {
+            // Remove the existing symbolic link
+            fs.unlinkSync(archivesPath);
+            fs.unlinkSync(livePath);
+            fs.unlinkSync(renewalPath);
+            console.log(`Existing certbot link removed: ${subdomain}.bugtech.online`);
+        }
+
         fs.unlinkSync('.lastip', (res) => {
             console.log(res, 'UNLINK')
         });
