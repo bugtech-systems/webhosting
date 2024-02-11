@@ -141,6 +141,7 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
         const reloadNginx = spawn('service', ['nginx', 'reload']);
         reloadNginx.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
         reloadNginx.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
+        fs.unlinkSync('.lastip');
 
         res.send('Deployment Successful');
     } catch (err) {
