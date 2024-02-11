@@ -1,0 +1,13 @@
+{
+  "apiKey": "fYWBbWKGFakp_CiigC76J7BgpjCmydCvLHH",
+  "secret": "46qcQqxFxfWPMMbj3XoCvy",
+  "domain": "bugtech.online",
+  "records": [
+    {
+      "type": "CNAME",
+      "name": "hey",
+      "data": "bugtech.online",
+      "ttl": 600
+    }
+  ]
+}

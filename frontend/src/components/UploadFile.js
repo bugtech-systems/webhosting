@@ -33,7 +33,7 @@ const UploadFiles = ({ handleGetFiles }) => {
         setProgress(0);
         setCurrentFile(currentFile);
 
-        FileUploadService.deploy(currentFile, subdomain, (event) => {
+        FileUploadService.deploy({ file: currentFile, projectName: subdomain, setupType: 'react' }, (event) => {
             setProgress(Math.round((100 * event.loaded) / event.total));
         })
             .then((response) => {

@@ -1,5 +1,6 @@
 import axios from "axios";
 import http from "./http-common";
+import { env_vars } from './config';
 
 const upload = (file, subdomain, onUploadProgress) => {
     let formData = new FormData();
@@ -23,7 +24,7 @@ const deploy = (file, subdomain, onUploadProgress) => {
     formData.append("build", file);
     formData.append("subdomain", subdomain);
 
-    return axios.post("https://bugtech.solutions/api/deploy", formData, {
+    return axios.post(`${env_vars.deployment_url}/deploy`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },

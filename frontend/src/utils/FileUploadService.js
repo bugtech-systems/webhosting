@@ -1,6 +1,6 @@
 import axios from "axios";
 import http from "./http-common";
-
+import { env_vars } from './config';
 const upload = (file, projectName) => {
     let formData = new FormData();
     const isAuthenticated = localStorage.getItem('token');
@@ -15,13 +15,13 @@ const upload = (file, projectName) => {
     });
 };
 
-const deploy = (file, projectName, onUploadProgress) => {
+const deploy = ({ file, projectName, setupType }, onUploadProgress) => {
     let formData = new FormData();
 
     formData.append("build", file);
     formData.append("subdomain", projectName);
 
-    return axios.post("https://bugtech.solutions/api/deploy", formData, {
+    return axios.post(`${env_vars.deployment_url}/deploy/${setupType}`, formData, {
         headers: {
             "Content-Type": "multipart/form-data",
         },
