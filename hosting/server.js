@@ -15,7 +15,7 @@ app.use(cors({
 }))
 const port = process.env.PORT || 3003;
 
-const upload = multer({ dest: '/var/www' });
+const upload = multer({ dest: '/var/www/hosting' });
 
 app.get('/api', async (req, res) => {
     try {
