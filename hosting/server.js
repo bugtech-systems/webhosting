@@ -31,12 +31,21 @@ app.get('/api', async (req, res) => {
 app.post('/api/ssl', async (req, res) => {
 	const { subdomain } = req.body;
 	try {
+		const renewalPath = path.join("/etc/letsencrypt/renewal", `${subdomain}.bugtech.online`);
 
 
+		if (fs.existsSync(`${renewalPath}.conf`)) {
+			const filePerm = spawn('echo', ['2', '|', 'certbot', '--nginx', '-d', `${subdomain}.bugtech.online`]);
+			filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+			filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
-		const filePerm = spawn('echo', ['2', '|', 'certbot', '--nginx', '-d', `${subdomain}.bugtech.online`]);
-		filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
-		filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
+		} else {
+			const filePerm = spawn('certbot', ['--nginx', '-d', `${subdomain}.bugtech.online`]);
+			filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+			filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
+
+
+		}
 
 
 		res.send('Ssl Certified Successful');
