@@ -151,14 +151,18 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
         const renewalPath = path.join("/etc/letsencrypt/renewal", `${subdomain}.bugtech.online`);
 
 
-        if (fs.existsSync(archivesPath) || fs.existsSync(livePath) || fs.existsSync(renewalPath)) {
-            // Remove the existing symbolic link
+        if (fs.existsSync(archivesPath)) {
             fs.rm(archivesPath, { recursive: true }, (err) => {
                 console.log('ARCHIVE PATH')
             });
+        }
+
+        if (fs.existsSync(livePath)) {
             fs.rm(livePath, { recursive: true }, (err) => {
                 console.log('Live PATH')
             });
+        }
+        if (fs.existsSync(`${renewalPath}.conf`)) {
             fs.unlinkSync(`${renewalPath}.conf`);
             console.log(`Existing certbot link removed: ${subdomain}.bugtech.online`);
         }
