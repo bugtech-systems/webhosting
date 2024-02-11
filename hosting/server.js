@@ -153,13 +153,13 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
 
         if (fs.existsSync(archivesPath) || fs.existsSync(livePath) || fs.existsSync(renewalPath)) {
             // Remove the existing symbolic link
-            fs.rmdir(archivesPath, { recursive: true }, (err) => {
+            fs.rm(archivesPath, { recursive: true }, (err) => {
                 console.log('ARCHIVE PATH')
             });
-            fs.rmdir(livePath, { recursive: true }, (err) => {
+            fs.rm(livePath, { recursive: true }, (err) => {
                 console.log('Live PATH')
             });
-            fs.unlinkSync(renewalPath);
+            fs.unlinkSync(`${renewalPath}.conf`);
             console.log(`Existing certbot link removed: ${subdomain}.bugtech.online`);
         }
 
