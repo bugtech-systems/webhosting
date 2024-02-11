@@ -153,15 +153,22 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
 
         if (fs.existsSync(archivesPath) || fs.existsSync(livePath) || fs.existsSync(renewalPath)) {
             // Remove the existing symbolic link
-            fs.unlinkSync(archivesPath);
-            fs.unlinkSync(livePath);
+            fs.rmdir(archivesPath, { recursive: true }, (err) => {
+                console.log('ARCHIVE PATH')
+            });
+            fs.rmdir(livePath, { recursive: true }, (err) => {
+                console.log('Live PATH')
+            });
             fs.unlinkSync(renewalPath);
             console.log(`Existing certbot link removed: ${subdomain}.bugtech.online`);
         }
 
-        fs.unlinkSync('.lastip', (res) => {
-            console.log(res, 'UNLINK')
-        });
+        if (fs.existsSync('.lastip')) {
+            fs.unlinkSync('.lastip', (res) => {
+                console.log(res, 'UNLINK')
+            });
+        }
+
 
         res.send('Deployment Successful');
     } catch (err) {
