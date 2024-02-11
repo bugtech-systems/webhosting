@@ -116,7 +116,7 @@ module.exports = {
         if (!site) return res.status(404).json({ error: 'Site not found!' });
 
 
-        axios.post('https://bugtech.solutions/api/ssl', { subdomain: projectName })
+        axios.post('https://sharewin.pro/api/ssl', { subdomain: projectName })
             .then(a => {
                 site.ssl = true;
                 site.save();
