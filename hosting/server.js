@@ -17,7 +17,7 @@ const port = process.env.PORT || 3003;
 
 const upload = multer({ dest: '/var/www' });
 
-app.get('/', async (req, res) => {
+app.get('/api', async (req, res) => {
     try {
         res.send('NodeJS Sample Project Yow Atod!');
     } catch (err) {
@@ -25,7 +25,7 @@ app.get('/', async (req, res) => {
     }
 });
 
-app.post('/ssl', async (req, res) => {
+app.post('/api/ssl', async (req, res) => {
     const { subdomain } = req.body;
     try {
 
@@ -40,7 +40,7 @@ app.post('/ssl', async (req, res) => {
 
 });
 
-app.post('/deploy/react', upload.single('build'), async (req, res) => {
+app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
     const { subdomain } = req.body;
     try {
 
@@ -148,7 +148,7 @@ app.post('/deploy/react', upload.single('build'), async (req, res) => {
 
 });
 
-app.post('/deploy/node', upload.single('zipFile'), async (req, res) => {
+app.post('/api/deploy/node', upload.single('zipFile'), async (req, res) => {
     const { projectName } = req.body;
     try {
 

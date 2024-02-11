@@ -31,7 +31,7 @@ const userRoutes = require('./routes/userRoutes');
 const { executeScript } = require('./utils/pgsqlHelper');
 
 
-app.get('/', (req, res) => {
+app.get('/apiv2', (req, res) => {
   res.send('TESTING API!')
 })
 
