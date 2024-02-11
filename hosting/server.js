@@ -133,7 +133,7 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
         enableSite.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
         // Update GoDaddy DNS records
-        const updateDns = spawn('godaddy-dns', ['-c', 'config.json', '-i', 'lastIp']);
+        const updateDns = spawn('godaddy-dns', ['-c', 'config.json', '-i', '.lastip']);
         updateDns.stdout.on('data', (data) => console.log(`GoDaddy DNS Update: ${data}`));
         updateDns.stderr.on('data', (data) => console.error(`GoDaddy DNS Update Error: ${data}`));
 
