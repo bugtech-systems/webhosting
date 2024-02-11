@@ -12,7 +12,7 @@ const bodyParser = require('body-parser');
 
 const app = express();
 app.use(cors({
-    origin: "*"
+	origin: "*"
 }))
 
 app.use(bodyParser.json({ limit: '1gb' }));
@@ -21,61 +21,61 @@ const port = process.env.PORT || 3003;
 const upload = multer({ dest: '/var/www/hosting' });
 
 app.get('/api', async (req, res) => {
-    try {
-        res.send('NodeJS Sample Project Yow Atod!');
-    } catch (err) {
-        res.status(400).json({ message: 'Something went wrong', err })
-    }
+	try {
+		res.send('NodeJS Sample Project Yow Atod!');
+	} catch (err) {
+		res.status(400).json({ message: 'Something went wrong', err })
+	}
 });
 
 app.post('/api/ssl', async (req, res) => {
-    const { subdomain } = req.body;
-    try {
+	const { subdomain } = req.body;
+	try {
 
 
 
-        const filePerm = spawn('certbot', ['--nginx', '-d', `${subdomain}.bugtech.online`]);
-        filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
-        filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
+		const filePerm = spawn('echo', ['2', '|', 'certbot', '--nginx', '-d', `${subdomain}.bugtech.online`]);
+		filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+		filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
 
-        res.send('Ssl Certified Successful');
-    } catch (err) {
-        console.log(err)
-        res.status(400).json({ message: 'Something went wrong', err })
+		res.send('Ssl Certified Successful');
+	} catch (err) {
+		console.log(err)
+		res.status(400).json({ message: 'Something went wrong', err })
 
-    }
+	}
 
 });
 
 app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
-    const { subdomain } = req.body;
-    try {
+	const { subdomain } = req.body;
+	try {
 
-        // Unzip the build file
-        const unzipPath = path.join("/var/www/hosting", subdomain);
-        await fs.createReadStream(req.file.path).pipe(unzipper.Extract({ path: unzipPath }));
+		// Unzip the build file
+		const unzipPath = path.join("/var/www/hosting", subdomain);
+		await fs.createReadStream(req.file.path).pipe(unzipper.Extract({ path: unzipPath }));
 
-        const godaddyConfig = {
-            apiKey: 'fYWBbWKGFakp_CiigC76J7BgpjCmydCvLHH',
-            secret: '46qcQqxFxfWPMMbj3XoCvy',
-            domain: 'bugtech.online',
-            records: [
-                {
-                    type: 'CNAME',
-                    name: subdomain,
-                    data: 'bugtech.online',
-                    ttl: 600
-                },
-            ]
-        };
+		const godaddyConfig = {
+			apiKey: 'fYWBbWKGFakp_CiigC76J7BgpjCmydCvLHH',
+			secret: '46qcQqxFxfWPMMbj3XoCvy',
+			domain: 'bugtech.online',
+			records: [
+				{
+					type: 'CNAME',
+					name: subdomain,
+					data: 'bugtech.online',
+					ttl: 600
+				},
+			]
+		};
 
-        fs.writeFileSync('config.json', JSON.stringify(godaddyConfig, null, 2));
+		fs.writeFileSync('config.json', JSON.stringify(godaddyConfig, null, 2));
 
 
 
-        // Write Nginx server block config
-        const nginxConfig = `
+		// Write Nginx server block config
+		const nginxConfig = `
                     server {
                         listen 80;
                         listen [::]:80;
@@ -115,87 +115,87 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
 
 
 
-        const nginxConfigPath = `/etc/nginx/sites-available/${subdomain}.bugtech.online`;
-        const siteEnabledPath = `/etc/nginx/sites-enabled/${subdomain}.bugtech.online`;
-        fs.writeFileSync(nginxConfigPath, nginxConfig);
-        if (fs.existsSync(siteEnabledPath)) {
-            // Remove the existing symbolic link
-            fs.unlinkSync(siteEnabledPath);
-            console.log(`Existing symbolic link removed: ${siteEnabledPath}`);
-        }
+		const nginxConfigPath = `/etc/nginx/sites-available/${subdomain}.bugtech.online`;
+		const siteEnabledPath = `/etc/nginx/sites-enabled/${subdomain}.bugtech.online`;
+		fs.writeFileSync(nginxConfigPath, nginxConfig);
+		if (fs.existsSync(siteEnabledPath)) {
+			// Remove the existing symbolic link
+			fs.unlinkSync(siteEnabledPath);
+			console.log(`Existing symbolic link removed: ${siteEnabledPath}`);
+		}
 
 
 
-        const filePerm = spawn('chown', ['www-data:www-data', unzipPath]);
-        // Create symbolic link to enable the site
-        filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
-        filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
+		const filePerm = spawn('chown', ['www-data:www-data', unzipPath]);
+		// Create symbolic link to enable the site
+		filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+		filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
 
-        const enableSite = spawn('ln', ['-s', nginxConfigPath, siteEnabledPath]);
-        // Create symbolic link to enable the site
-        enableSite.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
-        enableSite.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
+		const enableSite = spawn('ln', ['-s', nginxConfigPath, siteEnabledPath]);
+		// Create symbolic link to enable the site
+		enableSite.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+		enableSite.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
-        // Update GoDaddy DNS records
-        const updateDns = spawn('godaddy-dns', ['-c', 'config.json', '-i', '.lastip']);
-        updateDns.stdout.on('data', (data) => console.log(`GoDaddy DNS Update: ${data}`));
-        updateDns.stderr.on('data', (data) => console.error(`GoDaddy DNS Update Error: ${data}`));
+		// Update GoDaddy DNS records
+		const updateDns = spawn('godaddy-dns', ['-c', 'config.json', '-i', '.lastip']);
+		updateDns.stdout.on('data', (data) => console.log(`GoDaddy DNS Update: ${data}`));
+		updateDns.stderr.on('data', (data) => console.error(`GoDaddy DNS Update Error: ${data}`));
 
-        // Reload Nginx
-        const reloadNginx = spawn('service', ['nginx', 'reload']);
-        reloadNginx.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
-        reloadNginx.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
-        const archivesPath = path.join("/etc/letsencrypt/archive", `${subdomain}.bugtech.online`);
-        const livePath = path.join("/etc/letsencrypt/live", `${subdomain}.bugtech.online`);
-        const renewalPath = path.join("/etc/letsencrypt/renewal", `${subdomain}.bugtech.online`);
-
-
-        if (fs.existsSync(archivesPath)) {
-            fs.rm(archivesPath, { recursive: true }, (err) => {
-                console.log('ARCHIVE PATH')
-            });
-        }
-
-        if (fs.existsSync(livePath)) {
-            fs.rm(livePath, { recursive: true }, (err) => {
-                console.log('Live PATH')
-            });
-        }
-        if (fs.existsSync(`${renewalPath}.conf`)) {
-            fs.unlinkSync(`${renewalPath}.conf`);
-            console.log(`Existing certbot link removed: ${subdomain}.bugtech.online`);
-        }
-
-        if (fs.existsSync('.lastip')) {
-            fs.unlinkSync('.lastip', (res) => {
-                console.log(res, 'UNLINK')
-            });
-        }
+		// Reload Nginx
+		const reloadNginx = spawn('service', ['nginx', 'reload']);
+		reloadNginx.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
+		reloadNginx.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
+		const archivesPath = path.join("/etc/letsencrypt/archive", `${subdomain}.bugtech.online`);
+		const livePath = path.join("/etc/letsencrypt/live", `${subdomain}.bugtech.online`);
+		const renewalPath = path.join("/etc/letsencrypt/renewal", `${subdomain}.bugtech.online`);
 
 
-        res.send('Deployment Successful');
-    } catch (err) {
-        console.log(err)
-        res.status(400).json({ message: 'Something went wrong', err })
+		if (fs.existsSync(archivesPath)) {
+			fs.rm(archivesPath, { recursive: true }, (err) => {
+				console.log('ARCHIVE PATH')
+			});
+		}
 
-    }
+		if (fs.existsSync(livePath)) {
+			fs.rm(livePath, { recursive: true }, (err) => {
+				console.log('Live PATH')
+			});
+		}
+		if (fs.existsSync(`${renewalPath}.conf`)) {
+			fs.unlinkSync(`${renewalPath}.conf`);
+			console.log(`Existing certbot link removed: ${subdomain}.bugtech.online`);
+		}
+
+		if (fs.existsSync('.lastip')) {
+			fs.unlinkSync('.lastip', (res) => {
+				console.log(res, 'UNLINK')
+			});
+		}
+
+
+		res.send('Deployment Successful');
+	} catch (err) {
+		console.log(err)
+		res.status(400).json({ message: 'Something went wrong', err })
+
+	}
 
 });
 
 app.post('/api/deploy/node', upload.single('zipFile'), async (req, res) => {
-    const { projectName } = req.body;
-    try {
+	const { projectName } = req.body;
+	try {
 
-        let rand = new Math.floor(Math.random() * 10);
-        let hostName = `${projectName}-${rand}${rand}-api`;
+		let rand = new Math.floor(Math.random() * 10);
+		let hostName = `${projectName}-${rand}${rand}-api`;
 
-        // Unzip the build file
-        const unzipPath = path.join("/var/www/hosting", hostName);
-        await fs.createReadStream(req.file.path).pipe(unzipper.Extract({ path: hostName }));
+		// Unzip the build file
+		const unzipPath = path.join("/var/www/hosting", hostName);
+		await fs.createReadStream(req.file.path).pipe(unzipper.Extract({ path: hostName }));
 
-        // Write Nginx server block config
-        const nginxConfig = `
+		// Write Nginx server block config
+		const nginxConfig = `
                     server {
                         listen 80;
                         listen [::]:80;
@@ -237,70 +237,70 @@ app.post('/api/deploy/node', upload.single('zipFile'), async (req, res) => {
 
 
 
-        const nginxConfigPath = `/etc/nginx/sites-available/${hostName}.bugtech.online`;
-        const siteEnabledPath = `/etc/nginx/sites-enabled/${hostName}.bugtech.online`;
-        fs.writeFileSync(nginxConfigPath, nginxConfig);
-        if (fs.existsSync(siteEnabledPath)) {
-            // Remove the existing symbolic link
-            fs.unlinkSync(siteEnabledPath);
-            fs.unlinkSync(req.file.path);
+		const nginxConfigPath = `/etc/nginx/sites-available/${hostName}.bugtech.online`;
+		const siteEnabledPath = `/etc/nginx/sites-enabled/${hostName}.bugtech.online`;
+		fs.writeFileSync(nginxConfigPath, nginxConfig);
+		if (fs.existsSync(siteEnabledPath)) {
+			// Remove the existing symbolic link
+			fs.unlinkSync(siteEnabledPath);
+			fs.unlinkSync(req.file.path);
 
-            console.log(`Existing symbolic link removed: ${siteEnabledPath}`);
-        }
-
-
-
-        const godaddyConfig = {
-            apiKey: 'fYWBbWKGFakp_CiigC76J7BgpjCmydCvLHH',
-            secret: '46qcQqxFxfWPMMbj3XoCvy',
-            domain: 'bugtech.online',
-            records: [
-                {
-                    type: 'CNAME',
-                    name: hostName,
-                    data: 'bugtech.online',
-                    ttl: 600
-                },
-            ]
-        };
-
-        fs.writeFileSync('config.json', JSON.stringify(godaddyConfig, null, 2));
+			console.log(`Existing symbolic link removed: ${siteEnabledPath}`);
+		}
 
 
 
+		const godaddyConfig = {
+			apiKey: 'fYWBbWKGFakp_CiigC76J7BgpjCmydCvLHH',
+			secret: '46qcQqxFxfWPMMbj3XoCvy',
+			domain: 'bugtech.online',
+			records: [
+				{
+					type: 'CNAME',
+					name: hostName,
+					data: 'bugtech.online',
+					ttl: 600
+				},
+			]
+		};
+
+		fs.writeFileSync('config.json', JSON.stringify(godaddyConfig, null, 2));
 
 
-        const filePerm = spawn('chown', ['www-data:www-data', unzipPath]);
-        // Create symbolic link to enable the site
-        filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
-        filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
 
-        const enableSite = spawn('ln', ['-s', nginxConfigPath, siteEnabledPath]);
-        // Create symbolic link to enable the site
-        enableSite.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
-        enableSite.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
-        const reloadNginx = spawn('service', ['nginx', 'reload']);
-        reloadNginx.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
-        reloadNginx.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
+		const filePerm = spawn('chown', ['www-data:www-data', unzipPath]);
+		// Create symbolic link to enable the site
+		filePerm.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+		filePerm.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
-        // Update GoDaddy DNS records
-        const updateDns = spawn('godaddy-dns', ['-c', 'config.json']);
-        updateDns.stdout.on('data', (data) => console.log(`GoDaddy DNS Update: ${data}`));
-        updateDns.stderr.on('data', (data) => console.error(`GoDaddy DNS Update Error: ${data}`));
 
-        // Reload Nginx
-        const reloadNginx1 = spawn('service', ['nginx', 'reload']);
-        reloadNginx1.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
-        reloadNginx1.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
+		const enableSite = spawn('ln', ['-s', nginxConfigPath, siteEnabledPath]);
+		// Create symbolic link to enable the site
+		enableSite.stdout.on('data', (data) => console.log(`Site Enabled: ${data}`));
+		enableSite.stderr.on('data', (data) => console.error(`Site Enable Error: ${data}`));
 
-        res.send('Deployment Successful');
-    } catch (err) {
-        console.log(err)
-        res.status(400).json({ message: 'Something went wrong', err })
+		const reloadNginx = spawn('service', ['nginx', 'reload']);
+		reloadNginx.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
+		reloadNginx.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
 
-    }
+		// Update GoDaddy DNS records
+		const updateDns = spawn('godaddy-dns', ['-c', 'config.json']);
+		updateDns.stdout.on('data', (data) => console.log(`GoDaddy DNS Update: ${data}`));
+		updateDns.stderr.on('data', (data) => console.error(`GoDaddy DNS Update Error: ${data}`));
+
+		// Reload Nginx
+		const reloadNginx1 = spawn('service', ['nginx', 'reload']);
+		reloadNginx1.stdout.on('data', (data) => console.log(`Nginx Reloaded: ${data}`));
+		reloadNginx1.stderr.on('data', (data) => console.error(`Nginx Reload Error: ${data}`));
+
+		res.send('Deployment Successful');
+	} catch (err) {
+		console.log(err)
+		res.status(400).json({ message: 'Something went wrong', err })
+
+	}
 
 });
 
