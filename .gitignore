@@ -1,3 +1,5 @@
 node_modules*
 .env*
 storageFolder*
+config.json*
+.lastip*
