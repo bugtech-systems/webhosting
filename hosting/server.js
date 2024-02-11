@@ -7,12 +7,16 @@ const path = require('path');
 const unzipper = require('unzipper');
 const { spawn } = require('child_process');
 const cors = require('cors');
+const bodyParser = require('body-parser');
 
 
 const app = express();
 app.use(cors({
     origin: "*"
 }))
+
+app.use(bodyParser.json({ limit: '10mb' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
 const port = process.env.PORT || 3003;
 
 const upload = multer({ dest: '/var/www/hosting' });
@@ -88,7 +92,7 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
                         #
                         # include snippets/snakeoil.conf;
                 
-                        root ${unzipPath};
+                    root ${unzipPath};
                     index index.html index.htm index.nginx-debian.html;
                 
                         server_name ${subdomain}.bugtech.online;
