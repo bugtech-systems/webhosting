@@ -45,7 +45,7 @@ app.post('/api/deploy/react', upload.single('build'), async (req, res) => {
     try {
 
         // Unzip the build file
-        const unzipPath = path.join("/var/www", subdomain);
+        const unzipPath = path.join("/var/www/hosting", subdomain);
         await fs.createReadStream(req.file.path).pipe(unzipper.Extract({ path: unzipPath }));
 
         const godaddyConfig = {
@@ -156,7 +156,7 @@ app.post('/api/deploy/node', upload.single('zipFile'), async (req, res) => {
         let hostName = `${projectName}-${rand}${rand}-api`;
 
         // Unzip the build file
-        const unzipPath = path.join("/var/www", hostName);
+        const unzipPath = path.join("/var/www/hosting", hostName);
         await fs.createReadStream(req.file.path).pipe(unzipper.Extract({ path: hostName }));
 
         // Write Nginx server block config
