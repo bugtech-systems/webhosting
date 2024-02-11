@@ -1,3 +1,4 @@
+require('dotenv').config();
 const path = require('path');
 const File = require('../models/FileModel');
 const axios = require('axios');
@@ -9,9 +10,9 @@ module.exports = {
     uploadFile: async (req, res) => {
         let { projectName } = req.query;
         try {
-            const file = new File({ projectName, filename: req.file.filename, path: req.file.path, user: req.user?._id, host: 'bugtech.solutions' });
+            const file = new File({ projectName, filename: req.file.filename, path: req.file.path, user: req.user?._id, host: process.env.DOMAIN_HOST });
             await file.save();
-            
+
             res.status(201).json({ message: 'File uploaded successfully', file: req.file });
         } catch (error) {
             console.log(error)
@@ -73,10 +74,10 @@ module.exports = {
     },
     getFolderFiles: async (req, res) => {
         let folderPath = req.query.path;
-        
+
         try {
             if (!folderPath) return res.status(404).json({ message: 'Folder Path is required!' });
-            
+
             let filePath = path.join(process.cwd(), "uploads", folderPath)
             let contents = await getFiles(filePath, [])
             res.status(200).json(contents)
@@ -88,14 +89,14 @@ module.exports = {
     checkAvailability: async (req, res) => {
         let { projectName } = req.body;
         try {
-        console.log(req.body, 'RES BODY', !projectName)
+            console.log(req.body, 'RES BODY', !projectName)
             if (!projectName) {
                 return res.status(200).json({ availability: false })
             }
 
-            let available = await File.findOne({ $and: [{ projectName: projectName}, {isDeleted: false}] })
+            let available = await File.findOne({ $and: [{ projectName: projectName }, { isDeleted: false }] })
 
-    console.log(available, 'IS AVAILABLE')
+            console.log(available, 'IS AVAILABLE')
 
             res.status(200).json({ availability: available ? false : true })
 

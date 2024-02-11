@@ -15,8 +15,7 @@ app.use(cors({
     origin: "*"
 }))
 
-app.use(bodyParser.json({ limit: '10mb' }));
-app.use(bodyParser.urlencoded({ extended: true, limit: '10mb' }));
+app.use(bodyParser.json({ limit: '1gb' }));
 const port = process.env.PORT || 3003;
 
 const upload = multer({ dest: '/var/www/hosting' });
